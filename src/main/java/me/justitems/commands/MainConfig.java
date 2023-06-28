@@ -67,6 +67,7 @@ public class MainConfig {
                 }
             }
         }
+
         defaultFontFile = new File(dataFolder, "pack/assets/minecraft/font/default.json");
         if (!defaultFontFile.exists()) {
             try {
@@ -81,12 +82,6 @@ public class MainConfig {
             }
             loadFonts();
             defaultFontData.options().copyDefaults(true);
-            try {
-                prepareFont();
-            }catch (Exception e) {
-                plugin.getLogger().info("Can't write in " + defaultFontFile.getName());
-                e.printStackTrace();
-            }
         } else {
             loadFonts();
             defaultFontData.options().copyDefaults(false);
@@ -188,22 +183,6 @@ public class MainConfig {
         }
     }
 
-    public void prepareFont() throws IOException {
-        FileWriter writer = new FileWriter(defaultFontFile);
-
-        writer.write("{\n");
-        writer.write("    \"providers\": [\n");
-        writer.write("        {\n");
-        writer.write("            \"type\": \"bitmap\",\n");
-        writer.write("            \"file\": \"minecraft:font/member.png\",\n");
-        writer.write("            \"height\": 10,\n");
-        writer.write("            \"ascent\": 9,\n");
-        writer.write("            \"chars\": [\"\\uE001\"]\n");
-        writer.write("        }\n");
-        writer.write("}\n");
-
-        writer.close();
-    }
     public void generateResourcePack() {
         String packName = "MyResourcePack";
         String packDescription = "This is a custom resource pack";
@@ -224,6 +203,14 @@ public class MainConfig {
 
             // Copy lang
             File updatedLang = new File(resourcePackFolder, "assets/minecraft/lang/en_us.json");
+            File langFolder = new File(resourcePackFolder, "assets/minecraft/lang");
+            if (!langFolder.exists()) {
+                if (langFolder.mkdirs()) {
+                    plugin.getLogger().info("Created the folder " + langFolder.getName());
+                } else {
+                    plugin.getLogger().info("Created the folder " + langFolder.getName());
+                }
+            }
             if (!updatedLang.exists()) {
                 if (updatedLang.createNewFile()) {
                     plugin.getLogger().info("Created the file " + updatedLang.getName());
@@ -236,6 +223,14 @@ public class MainConfig {
 
             // Copy fonts
             File updatedFont = new File(resourcePackFolder, "assets/minecraft/font/default.json");
+            File fontFolder = new File(resourcePackFolder, "assets/minecraft/font");
+            if (!fontFolder.exists()) {
+                if (fontFolder.mkdirs()) {
+                    plugin.getLogger().info("Created the folder " + fontFolder.getName());
+                } else {
+                    plugin.getLogger().info("Created the folder " + fontFolder.getName());
+                }
+            }
             if (!updatedFont.exists()) {
                 if (updatedFont.createNewFile()) {
                     plugin.getLogger().info("Created the file " + updatedFont.getName());
