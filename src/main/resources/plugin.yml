@@ -1,0 +1,16 @@
+name: JustItems
+version: '${project.version}'
+main: me.justitems.JustItems
+api-version: '1.17'
+description: A plugin to set custom textures and to create your own resource packs for your server. To get started use /justitems
+permissions:
+  justitems.use:
+    description: You can use this plugin
+    default: op
+  justitems.settextures:
+    description: You can use /justitems set_texture
+    default: op
+commands:
+  justitems:
+    description: You can set textures to items and rename them. You can make custom resource pack for you server too.
+    permission: justitems.use
