@@ -28,6 +28,7 @@ public class MainTabComplete implements TabCompleter {
         if (args.length == 1) {
             commands.add("set_texture");
             commands.add("help");
+            commands.add("reload");
             return commands;
         } else if (args.length == 2) {
             if (args[0].equalsIgnoreCase("set_texture")) {

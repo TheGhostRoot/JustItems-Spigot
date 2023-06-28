@@ -1,10 +1,10 @@
 package me.justitems.commands;
 
 import me.justitems.JustItems;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -20,7 +20,35 @@ public class MainCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // only player commands: SetTextures
-        if (sender instanceof Player) {
+        if (sender instanceof ConsoleCommandSender) {
+
+            // on /justitems
+            if (args.length == 0) {
+                // help menu
+                plugin.help.consoleHelpMenu();
+            }
+
+            // go over the commands
+            switch (args[0].toLowerCase()) {
+                case "help": {
+                    // help menu
+                    plugin.help.consoleHelpMenu();
+                    break;
+                }
+                case "reload": {
+                    // reload the config
+                    plugin.config.loadConfig();
+                    plugin.getLogger().info("§2Just Items §6| §аConfig reloaded!");
+                    break;
+                }
+                default: {
+                    // help menu
+                    plugin.help.consoleHelpMenu();
+                    break;
+                }
+            }
+
+        } else if (sender instanceof Player) {
             Player player = (Player) sender;
 
             HashMap<String, String> msgTable = new HashMap<>();
@@ -50,6 +78,12 @@ public class MainCommand implements CommandExecutor {
                 case "help": {
                     // help menu
                     plugin.help.playerHelpMenu(player);
+                    break;
+                }
+                case "reload": {
+                    // reload the config
+                    plugin.config.loadConfig();
+                    player.sendMessage("§2Just Items §6| §аConfig reloaded!");
                     break;
                 }
                 default: {

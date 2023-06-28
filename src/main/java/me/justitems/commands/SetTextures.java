@@ -1,15 +1,12 @@
 package me.justitems.commands;
 
 import me.justitems.JustItems;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import java.util.HashMap;
-import java.util.UUID;
 
 public class SetTextures {
 
@@ -47,10 +44,24 @@ public class SetTextures {
                 ItemStack itemInHand = inventory.getItemInMainHand();
                 if (!itemInHand.getType().isAir()) {
                     // modify the holding item
-                    inventory.addItem(plugin.utils.itemWithUrl(itemInHand, args[2]));
+                    try {
+                        inventory.addItem(plugin.utils.itemWithUrl(itemInHand, args[2]));
+                    }catch (Exception e) {
+                        msgTable.put("<error>", "Can't set textures or inventory full");
+                        for (String message : plugin.utils.convertMessage(plugin.config.getErrorMessage(), msgTable, 1)) {
+                            player.sendMessage(message);
+                        }
+                    }
                 } else {
                     // give a new item
-                    inventory.addItem(plugin.utils.itemFromUrl(args[2], 1));
+                    try {
+                        inventory.addItem(plugin.utils.itemFromUrl(args[2], 1));
+                    } catch (Exception e){
+                        msgTable.put("<error>", "Can't set textures or inventory full");
+                        for (String message : plugin.utils.convertMessage(plugin.config.getErrorMessage(), msgTable, 1)) {
+                            player.sendMessage(message);
+                        }
+                    }
                 }
                 break;
             }
@@ -60,10 +71,24 @@ public class SetTextures {
                 ItemStack itemInHand = inventory.getItemInMainHand();
                 if (!itemInHand.getType().isAir()) {
                     // modify the holding item
-                    inventory.addItem(plugin.utils.itemWithBase64(itemInHand, args[2]));
+                    try {
+                        inventory.addItem(plugin.utils.itemWithBase64(itemInHand, args[2]));
+                    } catch (Exception e) {
+                        msgTable.put("<error>", "Can't set textures or inventory full");
+                        for (String message : plugin.utils.convertMessage(plugin.config.getErrorMessage(), msgTable, 1)) {
+                            player.sendMessage(message);
+                        }
+                    }
                 } else {
                     // give a new item
-                    inventory.addItem(plugin.utils.itemFromBase64(args[2], 1));
+                    try {
+                        inventory.addItem(plugin.utils.itemFromBase64(args[2], 1));
+                    } catch (Exception e) {
+                        msgTable.put("<error>", "Can't set textures or inventory full");
+                        for (String message : plugin.utils.convertMessage(plugin.config.getErrorMessage(), msgTable, 1)) {
+                            player.sendMessage(message);
+                        }
+                    }
                 }
                 break;
             }
@@ -73,10 +98,24 @@ public class SetTextures {
                 ItemStack itemInHand = inventory.getItemInMainHand();
                 if (!itemInHand.getType().isAir()) {
                     // modify the holding item
-                    inventory.addItem(plugin.utils.itemWithName(itemInHand, args[2]));
+                    try {
+                        inventory.addItem(plugin.utils.itemWithName(itemInHand, args[2]));
+                    } catch (Exception e) {
+                        msgTable.put("<error>", "Can't set textures or inventory full");
+                        for (String message : plugin.utils.convertMessage(plugin.config.getErrorMessage(), msgTable, 1)) {
+                            player.sendMessage(message);
+                        }
+                    }
                 } else {
                     // give a new item
-                    inventory.addItem(plugin.utils.itemFromName(args[2], 1));
+                    try {
+                        inventory.addItem(plugin.utils.itemFromName(args[2], 1));
+                    }catch (Exception e) {
+                        msgTable.put("<error>", "Can't set textures or inventory full");
+                        for (String message : plugin.utils.convertMessage(plugin.config.getErrorMessage(), msgTable, 1)) {
+                            player.sendMessage(message);
+                        }
+                    }
                 }
                 break;
             }
@@ -86,7 +125,14 @@ public class SetTextures {
                 ItemStack itemInHand = inventory.getItemInMainHand();
                 if (itemInHand.getType().isBlock()) {
                     // modify the holding item
-                    inventory.addItem((ItemStack) plugin.utils.blockWithUrl((Block) itemInHand, args[2]));
+                    try {
+                        plugin.utils.blockWithUrl((Block) itemInHand, args[2]);
+                    }catch (Exception e) {
+                        msgTable.put("<error>", "Can't set textures");
+                        for (String message : plugin.utils.convertMessage(plugin.config.getErrorMessage(), msgTable, 1)) {
+                            player.sendMessage(message);
+                        }
+                    }
                 } else {
                     msgTable.put("<item>", itemInHand.getType().toString());
                     msgTable.put("<req_item>", "BLOCK");
@@ -103,11 +149,10 @@ public class SetTextures {
                 if (itemInHand.getType().isBlock()) {
                     // modify the holding item
                     try {
-                        inventory.addItem((ItemStack) plugin.utils.blockWithBase64((Block) itemInHand, args[2]));
+                        plugin.utils.blockWithBase64((Block) itemInHand, args[2]);
                     } catch (Exception e) {
-                        msgTable.put("<item>", itemInHand.getType().toString());
-                        msgTable.put("<req_item>", "BLOCK");
-                        for (String message : plugin.utils.convertMessage(plugin.config.getWrongItemMessage(), msgTable, 1)) {
+                        msgTable.put("<error>", "Can't set textures");
+                        for (String message : plugin.utils.convertMessage(plugin.config.getErrorMessage(), msgTable, 1)) {
                             player.sendMessage(message);
                         }
                     }
@@ -126,7 +171,14 @@ public class SetTextures {
                 ItemStack itemInHand = inventory.getItemInMainHand();
                 if (itemInHand.getType().isBlock()) {
                     // modify the holding item
-                    inventory.addItem((ItemStack) plugin.utils.blockWithName((Block) itemInHand, args[2]));
+                    try {
+                        plugin.utils.blockWithName((Block) itemInHand, args[2]);
+                    }catch (Exception e) {
+                        msgTable.put("<error>", "Can't set textures");
+                        for (String message : plugin.utils.convertMessage(plugin.config.getErrorMessage(), msgTable, 1)) {
+                            player.sendMessage(message);
+                        }
+                    }
                 } else {
                     msgTable.put("<item>", itemInHand.getType().toString());
                     msgTable.put("<req_item>", "BLOCK");

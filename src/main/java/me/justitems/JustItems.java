@@ -69,7 +69,6 @@ public final class JustItems extends JavaPlugin {
             // TODO Main Command
             // TODO Main Tab Complete
             // TODO Commands
-            // TODO edit items like name, lore and emojis
 
 
             config = new MainConfig(this);
