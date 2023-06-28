@@ -6,7 +6,9 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 public class SetTextures {
@@ -20,124 +22,117 @@ public class SetTextures {
     public void command(Player player, String[] args) {
         // args >= 2
         // checks player permissions
+        HashMap<String, String> msgTable = new HashMap<>();
         if (!player.hasPermission("justitems.settextures")) {
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    plugin.config.getMissingPermissionsMessage().replace("<permission>", "justitems.settextures")));
+            msgTable.put("<permission>", "justitems.settextures");
+            for (String message : plugin.utils.convertMessage(plugin.config.getMissingPermissionsMessage(), msgTable, 1)) {
+                player.sendMessage(message);
+            }
             return;
         }
         // checks if the player gave any arguments
         if (args.length < 3) {
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    plugin.config.getMissingArgsMessage().replace("<args>", "URL")));
+            msgTable.put("<args>", "URL");
+            for (String message : plugin.utils.convertMessage(plugin.config.getMissingArgsMessage(), msgTable, 1)) {
+                player.sendMessage(message);
+            }
             return;
         }
         // goes over all options for setting textures
+        PlayerInventory inventory = player.getInventory();
         switch (args[1].toLowerCase()) {
             case "item_url": {
                 // args[2] == URL
                 // gets the item in the player's hands
-                ItemStack itemInHand = player.getInventory().getItemInMainHand();
+                ItemStack itemInHand = inventory.getItemInMainHand();
                 if (!itemInHand.getType().isAir()) {
                     // modify the holding item
-                    plugin.utils.itemWithUrl(itemInHand, args[2]);
+                    inventory.addItem(plugin.utils.itemWithUrl(itemInHand, args[2]));
                 } else {
                     // give a new item
-                    plugin.utils.itemFromUrl(args[2], 1);
+                    inventory.addItem(plugin.utils.itemFromUrl(args[2], 1));
                 }
                 break;
             }
             case "item_base64": {
                 // args[2] == BASE64
                 // gets the item in the player's hands
-                ItemStack itemInHand = player.getInventory().getItemInMainHand();
+                ItemStack itemInHand = inventory.getItemInMainHand();
                 if (!itemInHand.getType().isAir()) {
                     // modify the holding item
-                    plugin.utils.itemWithBase64(itemInHand, args[2]);
+                    inventory.addItem(plugin.utils.itemWithBase64(itemInHand, args[2]));
                 } else {
                     // give a new item
-                    plugin.utils.itemFromBase64(args[2], 1);
+                    inventory.addItem(plugin.utils.itemFromBase64(args[2], 1));
                 }
                 break;
             }
             case "item_player_name": {
                 // args[2] == Player Name
                 // gets the item in the player's hands
-                ItemStack itemInHand = player.getInventory().getItemInMainHand();
+                ItemStack itemInHand = inventory.getItemInMainHand();
                 if (!itemInHand.getType().isAir()) {
                     // modify the holding item
-                    plugin.utils.itemWithName(itemInHand, args[2]);
+                    inventory.addItem(plugin.utils.itemWithName(itemInHand, args[2]));
                 } else {
                     // give a new item
-                    plugin.utils.itemFromName(args[2], 1);
-                }
-                break;
-            }
-            case "item_player_uuid": {
-                // args[2] == Player UUID
-                // gets the item in the player's hands
-                ItemStack itemInHand = player.getInventory().getItemInMainHand();
-                if (!itemInHand.getType().equals(Material.AIR)) {
-                    // modify the holding item
-                    plugin.utils.itemWithUuid(itemInHand, UUID.fromString(args[2]));
-                } else {
-                    // give a new item
-                    plugin.utils.itemFromUuid(UUID.fromString(args[2]), 1);
+                    inventory.addItem(plugin.utils.itemFromName(args[2], 1));
                 }
                 break;
             }
             case "block_url": {
                 // args[2] == URL
                 // gets the item in the player's hands
-                ItemStack itemInHand = player.getInventory().getItemInMainHand();
+                ItemStack itemInHand = inventory.getItemInMainHand();
                 if (itemInHand.getType().isBlock()) {
                     // modify the holding item
-                    plugin.utils.blockWithUrl((Block) itemInHand, args[2]);
+                    inventory.addItem((ItemStack) plugin.utils.blockWithUrl((Block) itemInHand, args[2]));
                 } else {
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                            plugin.config.getWrongItemMessage().replace("<item>", itemInHand.getType().toString())
-                                    .replace("<req_item>", "BLOCK")));
+                    msgTable.put("<item>", itemInHand.getType().toString());
+                    msgTable.put("<req_item>", "BLOCK");
+                    for (String message : plugin.utils.convertMessage(plugin.config.getWrongItemMessage(), msgTable, 1)) {
+                        player.sendMessage(message);
+                    }
                 }
                 break;
             }
             case "block_base64": {
                 // args[2] == BASE64
                 // gets the item in the player's hands
-                ItemStack itemInHand = player.getInventory().getItemInMainHand();
+                ItemStack itemInHand = inventory.getItemInMainHand();
                 if (itemInHand.getType().isBlock()) {
                     // modify the holding item
-                    plugin.utils.blockWithBase64((Block) itemInHand, args[2]);
+                    try {
+                        inventory.addItem((ItemStack) plugin.utils.blockWithBase64((Block) itemInHand, args[2]));
+                    } catch (Exception e) {
+                        msgTable.put("<item>", itemInHand.getType().toString());
+                        msgTable.put("<req_item>", "BLOCK");
+                        for (String message : plugin.utils.convertMessage(plugin.config.getWrongItemMessage(), msgTable, 1)) {
+                            player.sendMessage(message);
+                        }
+                    }
                 } else {
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                            plugin.config.getWrongItemMessage().replace("<item>", itemInHand.getType().toString())
-                                    .replace("<req_item>", "BLOCK")));
+                    msgTable.put("<item>", itemInHand.getType().toString());
+                    msgTable.put("<req_item>", "BLOCK");
+                    for (String message : plugin.utils.convertMessage(plugin.config.getWrongItemMessage(), msgTable, 1)) {
+                        player.sendMessage(message);
+                    }
                 }
                 break;
             }
             case "block_player_name": {
                 // args[2] == Player Name
                 // gets the item in the player's hands
-                ItemStack itemInHand = player.getInventory().getItemInMainHand();
+                ItemStack itemInHand = inventory.getItemInMainHand();
                 if (itemInHand.getType().isBlock()) {
                     // modify the holding item
-                    plugin.utils.blockWithName((Block) itemInHand, args[2]);
+                    inventory.addItem((ItemStack) plugin.utils.blockWithName((Block) itemInHand, args[2]));
                 } else {
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                            plugin.config.getWrongItemMessage().replace("<item>", itemInHand.getType().toString())
-                                    .replace("<req_item>", "BLOCK")));
-                }
-                break;
-            }
-            case "block_player_uuid": {
-                // args[2] == UUID
-                // gets the item in the player's hands
-                ItemStack itemInHand = player.getInventory().getItemInMainHand();
-                if (itemInHand.getType().isBlock()) {
-                    // modify the holding item
-                    plugin.utils.blockWithUuid((Block) itemInHand, UUID.fromString(args[2]));
-                } else {
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                            plugin.config.getWrongItemMessage().replace("<item>", itemInHand.getType().toString())
-                                    .replace("<req_item>", "BLOCK")));
+                    msgTable.put("<item>", itemInHand.getType().toString());
+                    msgTable.put("<req_item>", "BLOCK");
+                    for (String message : plugin.utils.convertMessage(plugin.config.getWrongItemMessage(), msgTable, 1)) {
+                        player.sendMessage(message);
+                    }
                 }
                 break;
             }

@@ -3,6 +3,7 @@ package me.justitems;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.SkullType;
 import org.bukkit.block.Block;
@@ -15,8 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Base64;
-import java.util.UUID;
+import java.util.*;
 
 public class Utils {
     private static boolean warningPosted = false;
@@ -25,13 +25,26 @@ public class Utils {
     private static Method metaSetProfileMethod;
     private static Field metaProfileField;
 
+
+
+    public List<String> convertMessage(List<String> messages, HashMap<String, String> table, int times) {
+        // <player> -> Player's Name
+        for (int i = 0; i < times; i++) {
+            for (int m = 0; m < messages.size(); m++) {
+                for (Map.Entry<String, String> ent : table.entrySet()) {
+                    messages.set(m, ChatColor.translateAlternateColorCodes('&',
+                            messages.get(m).replace(ent.getKey(), ent.getValue())));
+                }
+            }
+        }
+        return messages;
+    }
+
+
     /**
      * Creates a player skull, should work in both legacy and new Bukkit APIs.
      *
      */
-
-
-
     public static ItemStack createSkull(int amount) {
         checkLegacy();
         ItemStack item;
@@ -170,13 +183,14 @@ public class Utils {
      * @deprecated names don't make for good identifiers.
      */
     @Deprecated
-    public void blockWithName(Block block, String name) {
+    public Block blockWithName(Block block, String name) {
         notNull(block, "block");
         notNull(name, "name");
 
         Skull state = (Skull) block.getState();
         state.setOwningPlayer(Bukkit.getOfflinePlayer(name));
         state.update(false, false);
+        return block;
     }
 
     /**
@@ -185,7 +199,7 @@ public class Utils {
      * @param block The block to set.
      * @param id    The player to set it to.
      */
-    public void blockWithUuid(Block block, UUID id) {
+    public Block blockWithUuid(Block block, UUID id) {
         notNull(block, "block");
         notNull(id, "id");
 
@@ -193,6 +207,7 @@ public class Utils {
         Skull state = (Skull) block.getState();
         state.setOwningPlayer(Bukkit.getOfflinePlayer(id));
         state.update(false, false);
+        return block;
     }
 
     /**
@@ -201,11 +216,11 @@ public class Utils {
      * @param block The block to set.
      * @param url   The mojang URL to set it to use.
      */
-    public void blockWithUrl(Block block, String url) {
+    public Block blockWithUrl(Block block, String url) {
         notNull(block, "block");
         notNull(url, "url");
 
-        blockWithBase64(block, urlToBase64(url));
+        return blockWithBase64(block, urlToBase64(url));
     }
 
     /**
@@ -214,7 +229,7 @@ public class Utils {
      * @param block  The block to set.
      * @param base64 The base64 to set it to use.
      */
-    public void blockWithBase64(Block block, String base64) {
+    public Block blockWithBase64(Block block, String base64) {
         notNull(block, "block");
         notNull(base64, "base64");
 
@@ -222,6 +237,7 @@ public class Utils {
         Skull state = (Skull) block.getState();
         mutateBlockState(state, base64);
         state.update(false, false);
+        return block;
     }
 
     private void setToSkull(Block block) {

@@ -5,6 +5,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class MainConfig {
@@ -42,34 +44,53 @@ public class MainConfig {
         }*/
     }
 
-    public String getMissingPermissionsMessage() {
-        String got = configData.getString("messages.missing_permission");
+    public List<String> getMissingPermissionsMessage() {
+        List<String> got = (List<String>) configData.getList("messages.missing_permission");
         if (got == null) {
-            configData.set("messages.missing_permission", "&cYou don't have &6<permission> &cpermission");
+            List<String> array = new ArrayList<>();
+            array.add("&cYou don't have &6<permission> &cpermission");
+            configData.set("messages.missing_permission", array);
             reloadConfig();
-            return "";
+            return new ArrayList<>();
         } else {
             return got;
         }
     }
 
-    public String getMissingArgsMessage() {
-        String got = configData.getString("messages.missing_option");
+    public List<String> getErrorMessage() {
+        List<String> got = (List<String>) configData.getList("messages.error");
         if (got == null) {
-            configData.set("messages.missing_option", "&cYou have to provide &6<args>&c arguments!");
+            List<String> array = new ArrayList<>();
+            array.add("&cFailed &4<error>");
+            configData.set("messages.error", array);
             reloadConfig();
-            return "";
+            return new ArrayList<>();
         } else {
             return got;
         }
     }
 
-    public String getWrongItemMessage() {
-        String got = configData.getString("messages.wrong_item");
+    public List<String> getMissingArgsMessage() {
+        List<String> got = (List<String>) configData.getList("messages.missing_option");
         if (got == null) {
-            configData.set("messages.wrong_item", "&cThe &6<item>&c your holding must be &6<req_item>");
+            List<String> array = new ArrayList<>();
+            array.add("&cYou have to provide &6<args>&c arguments!");
+            configData.set("messages.missing_option", array);
             reloadConfig();
-            return "";
+            return new ArrayList<>();
+        } else {
+            return got;
+        }
+    }
+
+    public List<String> getWrongItemMessage() {
+        List<String> got = (List<String>) configData.getList("messages.wrong_item");
+        if (got == null) {
+            List<String> array = new ArrayList<>();
+            array.add("&cThe &6<item>&c your holding must be &6<req_item>");
+            configData.set("messages.wrong_item", array);
+            reloadConfig();
+            return new ArrayList<>();
         } else {
             return got;
         }

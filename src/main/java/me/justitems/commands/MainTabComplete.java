@@ -34,11 +34,9 @@ public class MainTabComplete implements TabCompleter {
                 commands.add("item_url");
                 commands.add("item_base64");
                 commands.add("item_player_name");
-                commands.add("item_player_uuid");
                 commands.add("block_url");
                 commands.add("block_base64");
                 commands.add("block_player_name");
-                commands.add("block_player_uuid");
                 return commands;
             }
         } else if (args.length == 3) {
@@ -52,9 +50,6 @@ public class MainTabComplete implements TabCompleter {
                 } else if (args[1].equalsIgnoreCase("item_player_name") || args[1].equalsIgnoreCase("block_player_name")) {
                     commands.add("---- Player Name ----");
                     commands.addAll(allPlayers);
-                    return commands;
-                } else if (args[1].equalsIgnoreCase("item_player_uuid") || args[1].equalsIgnoreCase("block_player_uuid")) {
-                    commands.add("---- Player UUID ----");
                     return commands;
                 }
 

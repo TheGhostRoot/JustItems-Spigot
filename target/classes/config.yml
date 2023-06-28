@@ -1,7 +1,12 @@
 # Messages
 
 messages:
-  missing_permission: "&cYou don't have &6<permission> &cpermission" # <permission> -> name of the permission
-  missing_option: "&cYou have to provide &6<args>&c arguments!"  # <args> -> the needed arguments
-  wrong_item: "&cThe &6<item>&c your holding must be &6<req_item>" # <item> -> Type of item your holding | <req_item> -> Type of required item to be hold
+  missing_permission:
+  - "&cYou don't have &6<permission> &cpermission" # <permission> -> name of the permission
+  missing_option:
+  - "&cYou have to provide &6<args> &c arguments!"  # <args> -> the needed arguments
+  wrong_item:
+  - "&cThe &6<item> &c your holding must be &6<req_item>" # <item> -> Type of item your holding | <req_item> -> Type of required item to be hold
+  error:
+  - "&cFailed &4<error>" # <error> -> the error message
 

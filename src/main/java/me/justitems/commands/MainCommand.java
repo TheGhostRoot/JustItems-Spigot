@@ -7,6 +7,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
+
 public class MainCommand implements CommandExecutor {
 
     private final JustItems plugin;
@@ -21,10 +23,14 @@ public class MainCommand implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
 
+            HashMap<String, String> msgTable = new HashMap<>();
+
             // checks if the player has permissions to use the plugin.
             if (!player.hasPermission("justitems.use")) {
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                        plugin.config.getMissingPermissionsMessage().replace("<permission>", "justitems.use")));
+                msgTable.put("<permission>", "justitems.use");
+                for (String msg : plugin.utils.convertMessage(plugin.config.getMissingPermissionsMessage(), msgTable, 1)) {
+                    player.sendMessage(msg);
+                }
                 return true;
             }
 
