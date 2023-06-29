@@ -22,7 +22,7 @@ public class MainCommand implements CommandExecutor {
         // only player commands: SetTextures
         if (sender instanceof ConsoleCommandSender) {
 
-            plugin.config.generateResourcePack();
+            plugin.packHelper.generateResourcePack();
 
             // on /justitems
             if (args.length == 0) {

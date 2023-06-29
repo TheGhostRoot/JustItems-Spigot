@@ -19,6 +19,8 @@ public final class JustItems extends JavaPlugin {
 
     public SetTextures setTextures;
 
+    public PackHelper packHelper;
+
     @Override
     public void onEnable() {
         String version = "N/A";
@@ -69,9 +71,12 @@ public final class JustItems extends JavaPlugin {
             // TODO Main Command
             // TODO Main Tab Complete
             // TODO Commands
+            // TODO Finish Help Menu
+            // TODO Hats, Wings, Liquids, Mobs, HUI/HUD, GUI
 
 
             config = new MainConfig(this);
+            packHelper = new PackHelper(this);
             getCommand("justitems").setExecutor(new MainCommand(this));
             getCommand("justitems").setTabCompleter(new MainTabComplete(this));
             utils = new Utils();

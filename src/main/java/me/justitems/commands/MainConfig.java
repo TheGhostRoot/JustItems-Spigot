@@ -20,14 +20,6 @@ public class MainConfig {
 
     private final File configFile;
 
-    private final File langFile;
-
-    private final File defaultFontFile;
-
-
-    private FileConfiguration defaultFontData;
-
-    private FileConfiguration langData;
 
     private FileConfiguration configData;
 
@@ -44,83 +36,6 @@ public class MainConfig {
             }
         }
         configFile = new File(dataFolder, "config.yml");
-        List<String> pack = new ArrayList<>();
-        pack.add("pack");
-        pack.add("pack/assets");
-        pack.add("pack/assets/minecraft");
-        pack.add("pack/assets/minecraft/font");
-        pack.add("pack/assets/minecraft/textures");
-        pack.add("pack/assets/minecraft/textures/font");
-        pack.add("pack/assets/minecraft/textures/item");
-        pack.add("pack/assets/minecraft/models");
-        pack.add("pack/assets/minecraft/models/item");
-        pack.add("pack/assets/minecraft/lang");
-        pack.add("items");
-        pack.add("emojis");
-        for (String folder : pack) {
-            File f = new File(dataFolder, folder);
-            if (!f.exists()) {
-                if (f.mkdirs()) {
-                    main.getLogger().info("Made a folder " + pack);
-                } else {
-                    main.getLogger().info("Can't create the folder " + pack);
-                }
-            }
-        }
-
-        defaultFontFile = new File(dataFolder, "pack/assets/minecraft/font/default.json");
-        if (!defaultFontFile.exists()) {
-            try {
-                if (defaultFontFile.createNewFile()) {
-                    plugin.getLogger().info("Made a file " + defaultFontFile.getName());
-                } else {
-                    plugin.getLogger().info("Can't create the file " + defaultFontFile.getName());
-                }
-            } catch (Exception e) {
-                plugin.getLogger().info("Can't create the file " + defaultFontFile.getName());
-                e.printStackTrace();
-            }
-            loadFonts();
-            defaultFontData.options().copyDefaults(true);
-        } else {
-            loadFonts();
-            defaultFontData.options().copyDefaults(false);
-        }
-        langFile = new File(dataFolder, "pack/assets/minecraft/lang/en_us.json");
-        if (!langFile.exists()) {
-            try {
-                if (langFile.createNewFile()) {
-                    plugin.getLogger().info("Made a file " + langFile.getName());
-                } else {
-                    plugin.getLogger().info("Can't create the file " + langFile.getName());
-                }
-            } catch (Exception e) {
-                plugin.getLogger().info("Can't create the file " + langFile.getName());
-                e.printStackTrace();
-            }
-        }
-        File langFile2 = new File(dataFolder, "en_us.json");
-        if (!langFile2.exists()) {
-            main.saveResource("en_us.json", false);
-            try {
-                Files.copy(langFile2.toPath(), langFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                if (langFile2.exists()){
-                    if (langFile2.delete()) {
-                        plugin.getLogger().info("Deleted en_us.json");
-                    } else {
-                        plugin.getLogger().info("Can't delete en_us.json");
-                    }
-                }
-            } catch (Exception e) {
-                plugin.getLogger().info("Can't copy the file en_us.json");
-                e.printStackTrace();
-            }
-            loadLang();
-            langData.options().copyDefaults(true);
-        } else {
-            loadLang();
-            langData.options().copyDefaults(false);
-        }
         if (!configFile.exists()) {
             main.saveResource("config.yml", false);
             configData = main.getConfig();
@@ -183,302 +98,103 @@ public class MainConfig {
         }
     }
 
-    public void generateResourcePack() {
-        String packName = "MyResourcePack";
-        String packDescription = "This is a custom resource pack";
-        String packVersion = "1.0";
-        File dataFolder = plugin.getDataFolder();
-        File resourcePackFolder = new File(dataFolder, packName);
+    public int getPackFormat() {
+        return configData.getInt("pack.format");
+    }
 
-        // Create the resource pack folder structure
-        try {
-            copyFolder(new File(dataFolder, "pack"), resourcePackFolder);
-
-            // Copy items images to textures/item folder and create .mcmeta files
-            copyImagesWithMetadata(new File(dataFolder, "items"),
-                    new File(resourcePackFolder, "assets/minecraft/textures/item"), new File(resourcePackFolder, "assets/minecraft/models/item"));
-
-            copyImagesWithMetadata(new File(dataFolder, "items"),
-                    new File(dataFolder, "pack/assets/minecraft/textures/item"), new File(dataFolder, "pack/assets/minecraft/models/item"));
-
-            // Copy lang
-            File updatedLang = new File(resourcePackFolder, "assets/minecraft/lang/en_us.json");
-            File langFolder = new File(resourcePackFolder, "assets/minecraft/lang");
-            if (!langFolder.exists()) {
-                if (langFolder.mkdirs()) {
-                    plugin.getLogger().info("Created the folder " + langFolder.getName());
-                } else {
-                    plugin.getLogger().info("Created the folder " + langFolder.getName());
-                }
-            }
-            if (!updatedLang.exists()) {
-                if (updatedLang.createNewFile()) {
-                    plugin.getLogger().info("Created the file " + updatedLang.getName());
-                } else {
-                    plugin.getLogger().info("Can't create the file " + updatedLang.getName());
-                }
-            }
-            Files.copy(langFile.toPath(), updatedLang.toPath(), StandardCopyOption.REPLACE_EXISTING);
-
-
-            // Copy fonts
-            File updatedFont = new File(resourcePackFolder, "assets/minecraft/font/default.json");
-            File fontFolder = new File(resourcePackFolder, "assets/minecraft/font");
-            if (!fontFolder.exists()) {
-                if (fontFolder.mkdirs()) {
-                    plugin.getLogger().info("Created the folder " + fontFolder.getName());
-                } else {
-                    plugin.getLogger().info("Created the folder " + fontFolder.getName());
-                }
-            }
-            if (!updatedFont.exists()) {
-                if (updatedFont.createNewFile()) {
-                    plugin.getLogger().info("Created the file " + updatedFont.getName());
-                } else {
-                    plugin.getLogger().info("Can't create the file " + updatedFont.getName());
-                }
-            }
-            Files.copy(defaultFontFile.toPath(), updatedFont.toPath(), StandardCopyOption.REPLACE_EXISTING);
-
-            // Copy emojis images to textures/font folder and update default.json
-            updateDefaultJson(new File(dataFolder, "emojis"),
-                    new File(resourcePackFolder, "assets/minecraft/textures/font"));
-
-            updateDefaultJson(new File(dataFolder, "emojis"),
-                    new File(dataFolder, "pack/assets/minecraft/textures/font"));
-
-            // Generate pack.mcmeta file
-            generatePackMcMeta(resourcePackFolder, packDescription, packVersion);
-            generatePackMcMeta(new File(dataFolder, "pack"), packDescription, packVersion);
-
-            // Zip the resource pack folder
-            zipResourcePack(resourcePackFolder, new File(dataFolder, packName + ".zip"));
-
-            // Provide the resource pack file to all players on the server
-            sendResourcePackToPlayers(dataFolder, packName);
-        } catch (IOException e) {
-            e.printStackTrace();
+    public String getPackDescription() {
+        String got = configData.getString("pack.description");
+        if (got == null) {
+            configData.set("pack.description", "Your own pack");
+            reloadConfig();
+            return "Your own pack";
+        } else {
+            return got;
         }
     }
 
-    public void copyFolder(File sourceFolder, File destinationFolder) throws IOException {
-        if (!sourceFolder.exists()) {
-            if (sourceFolder.mkdirs()) {
-                plugin.getLogger().info("Made a folder " + sourceFolder.getName());
-            } else {
-                plugin.getLogger().info("Can't create the folder " + sourceFolder.getName());
-            }
-        }
-
-        if (!destinationFolder.exists()) {
-            if (destinationFolder.mkdirs()) {
-                plugin.getLogger().info("Made a folder " + destinationFolder.getName());
-            } else {
-                plugin.getLogger().info("Can't create the folder " + destinationFolder.getName());
-            }
-        }
-
-        File[] files = sourceFolder.listFiles();
-        if (files != null) {
-            for (File file : files) {
-                File destinationFile = new File(destinationFolder, file.getName());
-                if (file.isDirectory() && !file.exists()) {
-                    if (file.mkdirs()) {
-                        plugin.getLogger().info("Made a folder " + file.getName());
-                    } else {
-                        plugin.getLogger().info("Can't make a folder " + file.getName());
-                    }
-                } else {
-                    Files.copy(file.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                }
-            }
+    public List<String> getBlocks() {
+        List<String> got = (List<String>) configData.getList("pack.blocks");
+        if (got == null) {
+            List<String> array = new ArrayList<>();
+            array.add("block1");
+            array.add("block2");
+            configData.set("pack.blocks", array);
+            reloadConfig();
+            return new ArrayList<>();
+        } else {
+            return got;
         }
     }
 
-    public void copyImagesWithMetadata(File sourceFolder, File texturesItemFolder, File modelFile) throws IOException {
-        if (!sourceFolder.exists() || !sourceFolder.isDirectory()) {
-            if (sourceFolder.mkdirs()) {
-                plugin.getLogger().info("Made a folder " + sourceFolder.getName());
-            } else {
-                plugin.getLogger().info("Can't create the folder " + sourceFolder.getName());
-            }
-        }
-
-        if (!texturesItemFolder.exists()) {
-            if (texturesItemFolder.mkdirs()) {
-                plugin.getLogger().info("Made a folder " + texturesItemFolder.getName());
-            } else {
-                plugin.getLogger().info("Can't create the folder " + texturesItemFolder.getName());
-            }
-        }
-
-        if (!modelFile.exists()) {
-            if (modelFile.mkdirs()) {
-                plugin.getLogger().info("Made a folder " + modelFile.getName());
-            } else {
-                plugin.getLogger().info("Can't create the folder " + modelFile.getName());
-            }
-        }
-
-        File[] imageFiles = sourceFolder.listFiles();
-        if (imageFiles != null) {
-            for (File imageFile : imageFiles) {
-                String imageName = imageFile.getName();
-                String itemName = imageName.substring(0, imageName.lastIndexOf('.'));
-                String jsonContent =
-                        "{\n" +
-                                "  \"parent\": \"item/handheld\",\n" +
-                                "  \"textures\": {\n" +
-                                "    \"layer0\": \"item/" + itemName + "\"\n" +
-                                "  }\n" +
-                                "}";
-
-                try (FileWriter writer = new FileWriter(new File(modelFile, itemName + ".json"))) {
-                    writer.write(jsonContent);
-                }
-
-                try (FileWriter writer = new FileWriter(new File(texturesItemFolder, itemName + ".png.mcmeta"))) {
-                    writer.write(
-                            "{\n" +
-                                    "  \"animation\": {\n" +
-                                    "    \"frames\": [\n" +
-                                    "        {\"index\":0, \"time\":10},\n" +
-                                    "        {\"index\":1, \"time\":10}\n" +
-                                    "    ]\n" +
-                                    "  }\n" +
-                                    "}");
-                }
-
-                Files.copy(imageFile.toPath(), new File(texturesItemFolder, imageName).toPath(),
-                        StandardCopyOption.REPLACE_EXISTING);
-            }
+    public List<String> getItems() {
+        List<String> got = (List<String>) configData.getList("pack.items");
+        if (got == null) {
+            List<String> array = new ArrayList<>();
+            array.add("item1");
+            array.add("item2");
+            configData.set("pack.items", array);
+            reloadConfig();
+            return new ArrayList<>();
+        } else {
+            return got;
         }
     }
 
-    public void updateDefaultJson(File emojisFolder, File texturesFontFolder) throws IOException {
-        if (!emojisFolder.exists() || !emojisFolder.isDirectory()) {
-            if (emojisFolder.mkdirs()) {
-                plugin.getLogger().info("Made a folder " + emojisFolder.getName());
-            } else {
-                plugin.getLogger().info("Can't create the folder " + emojisFolder.getName());
-            }
-        }
-
-        if (!texturesFontFolder.exists()) {
-            if (texturesFontFolder.mkdirs()) {
-                plugin.getLogger().info("Made a folder " + texturesFontFolder.getName());
-            } else {
-                plugin.getLogger().info("Can't create the folder " + texturesFontFolder.getName());
-            }
-        }
-
-        File[] imageFiles = emojisFolder.listFiles();
-        StringBuilder stringBuilder = new StringBuilder();
-        if (imageFiles != null) {
-            for (File imageFile : imageFiles) {
-                String imageName = imageFile.getName();
-                //stringBuilder.append()
-
-                Files.copy(imageFile.toPath(), new File(texturesFontFolder, imageName).toPath(),
-                        StandardCopyOption.REPLACE_EXISTING);
-            }
-        }
-
-        try (FileWriter writer = new FileWriter(defaultFontFile)) {
-            writer.write(stringBuilder.toString());
+    public List<String> getEmojis() {
+        List<String> got = (List<String>) configData.getList("pack.emojis");
+        if (got == null) {
+            List<String> array = new ArrayList<>();
+            array.add("emoji1");
+            array.add("emoji2");
+            configData.set("pack.emojis", array);
+            reloadConfig();
+            return new ArrayList<>();
+        } else {
+            return got;
         }
     }
 
-    public void generatePackMcMeta(File resourcePackFolder, String packDescription, String packVersion) throws IOException {
-        FileWriter writer = new FileWriter(new File(resourcePackFolder, "pack.mcmeta"));
-
-        writer.write("{\n");
-        writer.write("  \"pack\": {\n");
-        writer.write("    \"pack_format\": " + packVersion + ",\n");
-        writer.write("    \"description\": \"" + packDescription + "\"\n");
-        writer.write("  }\n");
-        writer.write("}");
-
-        writer.close();
+    public int getItemModelData(String item) {
+        return configData.getInt("pack."+item+".model_data");
     }
 
-    private void zipResourcePack(File resourcePackFolder, File zipFile) throws IOException {
-        try (FileOutputStream fos = new FileOutputStream(zipFile);
-             ZipOutputStream zos = new ZipOutputStream(fos)) {
-            zipFolder(resourcePackFolder, resourcePackFolder.getName(), zos);
-        }
+    public boolean getRemovePumpkinHat(String hat) {
+        return configData.getBoolean("pack."+hat+".remove_pumpkin");
     }
 
-    public void zipFolder(File folder, String parentFolder, ZipOutputStream zos) throws IOException {
-        if (folder.listFiles() == null) {
-            return;
-        }
-        for (File file : folder.listFiles()) {
-            if (file.isDirectory()) {
-                zipFolder(file, parentFolder + "/" + file.getName(), zos);
-            } else {
-                ZipEntry zipEntry = new ZipEntry(parentFolder + "/" + file.getName());
-                zos.putNextEntry(zipEntry);
+    public int getEmojiChars(String emoji) {
+        return configData.getInt("pack."+emoji+".chars");
+    }
 
-                try (FileInputStream fis = new FileInputStream(file)) {
-                    byte[] buffer = new byte[1024];
-                    int length;
-                    while ((length = fis.read(buffer)) > 0) {
-                        zos.write(buffer, 0, length);
-                    }
-                }
-
-                zos.closeEntry();
-            }
+    public String getItemType(String item) {
+        String got = configData.getString("pack."+item+".type");
+        if (got == null) {
+            configData.set("pack."+item+".type", "dirt");
+            reloadConfig();
+            return "dirt";
+        } else {
+            return got;
         }
     }
 
-    public void sendResourcePackToPlayers(File data, String name) throws IOException {
-        File resourcePackFile = new File(data, name + ".zip");
-        String resourcePackUrl = resourcePackFile.toURI().toString();
-        byte[] resourcePackHash = calculateSHA1(resourcePackFile);
-
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            player.setResourcePack(resourcePackUrl, resourcePackHash);
-        }
+    public boolean isItemAnimationEnabled(String item) {
+        return configData.getBoolean("pack."+item+".animation.enable");
     }
 
-    public byte[] calculateSHA1(File file) throws IOException {
-        MessageDigest digest;
-        try {
-            digest = MessageDigest.getInstance("SHA-1");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-
-        try (FileInputStream fis = new FileInputStream(file);
-             DigestInputStream dis = new DigestInputStream(fis, digest)) {
-            byte[] buffer = new byte[8192];
-            int bytesRead;
-            while ((bytesRead = dis.read(buffer)) != -1) {
-                digest.update(buffer, 0, bytesRead);
-            }
-            digest = dis.getMessageDigest();
-        }
-
-        return digest.digest();
+    public int getItemAnimationFrames(String item) {
+        return configData.getInt("pack."+item+".animation.amount_of_frames");
     }
+
+    public int getItemAnimationFrameTime(String item, int frame) {
+        return configData.getInt("pack."+item+".animation."+frame+".time");
+    }
+
 
 
     public void reloadConfig() {
         saveConfig();
         loadConfig();
-    }
-
-    public void reloadFont() {
-        saveFont();
-        loadFonts();
-    }
-
-    public void reloadLang() {
-        saveLang();
-        loadLang();
     }
 
     public void saveConfig() {
@@ -489,32 +205,9 @@ public class MainConfig {
         }
     }
 
-    public void saveLang() {
-        try {
-            langData.save(langFile);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void saveFont() {
-        try {
-            defaultFontData.save(defaultFontFile);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     public void loadConfig() {
         configData = YamlConfiguration.loadConfiguration(configFile);
-    }
-
-    public void loadLang() {
-        langData = YamlConfiguration.loadConfiguration(langFile);
-    }
-
-    public void loadFonts() {
-        defaultFontData = YamlConfiguration.loadConfiguration(defaultFontFile);
     }
 
 

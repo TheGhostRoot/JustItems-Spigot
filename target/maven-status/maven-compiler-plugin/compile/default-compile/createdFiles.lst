@@ -1,4 +1,5 @@
 me\justitems\JustItems.class
+me\justitems\PackHelper.class
 me\justitems\commands\HelpMenu.class
 me\justitems\commands\MainCommand.class
 me\justitems\Utils.class
