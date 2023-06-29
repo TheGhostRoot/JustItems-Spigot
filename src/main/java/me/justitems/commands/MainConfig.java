@@ -206,6 +206,61 @@ public class MainConfig {
         }
     }
 
+    public String getBlockBottom(String block) {
+        String got = configData.getString("pack."+block+".sides.bottom");
+        if (got == null) {
+            configData.set("pack."+block+".sides.bottom", "blockDown");
+            reloadConfig();
+            return "blockDown";
+        } else {
+            return got;
+        }
+    }
+
+    public String getBlockSide(String block) {
+        String got = configData.getString("pack."+block+".sides.side");
+        if (got == null) {
+            configData.set("pack."+block+".sides.side", "blockSide");
+            reloadConfig();
+            return "blockSide";
+        } else {
+            return got;
+        }
+    }
+
+    public String getBlockTop(String block) {
+        String got = configData.getString("pack."+block+".sides.top");
+        if (got == null) {
+            configData.set("pack."+block+".sides.top", "blockTop");
+            reloadConfig();
+            return "blockTop";
+        } else {
+            return got;
+        }
+    }
+
+    public String getBlockFront(String block) {
+        String got = configData.getString("pack."+block+".sides.front");
+        if (got == null) {
+            configData.set("pack."+block+".sides.front", "blockFront");
+            reloadConfig();
+            return "blockFront";
+        } else {
+            return got;
+        }
+    }
+
+    public String getBlockParticle(String block) {
+        String got = configData.getString("pack."+block+".sides.particle");
+        if (got == null) {
+            configData.set("pack."+block+".sides.particle", "blockParticle");
+            reloadConfig();
+            return "blockParticle";
+        } else {
+            return got;
+        }
+    }
+
     public boolean isItemAnimationEnabled(String item) {
         return configData.getBoolean("pack."+item+".animation.enable");
     }

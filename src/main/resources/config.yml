@@ -22,6 +22,12 @@ pack:
   block1:  # blocks don't have model data. At least for the time being, so you will replace/override already existing block with yours
     type: "dirt" # what type of block it will be
     item_model: "block1"
+    sides:
+      bottom: "blockDown" # the textures for the bottom side of the block
+      side: "blockSide" # the textures for side of the block
+      top: "blockTop" # the textures for the top side of the block
+      front: "blockFront" # the textures for the front side of the block
+      particle: "blockParticle" # the textures for the particle of the block
     animation:
       enable: true  # if you have animations.
       amount_of_frames: 2
@@ -32,6 +38,12 @@ pack:
   block2:  # You can add hats
     type: "stone_slab"  # use _ instead of space
     item_model: "block2"
+    sides:
+      bottom: "blockDown"
+      side: "blockSide"
+      top: "blockTop"
+      front: "blockFront"
+      particle: "blockParticle"
     animation:
       enable: true
       amount_of_frames: 2
