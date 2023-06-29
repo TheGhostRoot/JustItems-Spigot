@@ -11,6 +11,7 @@ messages:
   - "&cFailed &4<error>" # <error> -> the error message
 
 
+# Use only "/" for folders
 
 pack:
   format: 7  # https://minecraft.fandom.com/wiki/Pack_format
@@ -20,6 +21,7 @@ pack:
     - "block2"
   block1:  # blocks don't have model data. At least for the time being, so you will replace/override already existing block with yours
     type: "dirt" # what type of block it will be
+    item_model: "block1"
     animation:
       enable: true  # if you have animations.
       amount_of_frames: 2
@@ -29,6 +31,7 @@ pack:
         time: 5
   block2:  # You can add hats
     type: "stone_slab"  # use _ instead of space
+    item_model: "block2"
     animation:
       enable: true
       amount_of_frames: 2
@@ -37,10 +40,11 @@ pack:
       2:
         time: 5
   items:
-    - "new_items/item1"  # the texture can be also in a folder
+    - "new_items/item1"  # the texture can be also in a folder. NO system paths. Just paths in folder items/
     - "item2"
-  item1:
+  new_item/item1:
     type: "stone_sword" # if the item is invalid it will be replaced with stone_sword for items and dirt for blocks.
+    item_model: "new_item/item1" # if you have your own custom item model for this item then you can change the path to it.  NO system paths. Just paths in folder items/
     model_data: 1 # you can set multiple textures for one item
     animation:
       enable: true
@@ -51,6 +55,7 @@ pack:
         time: 5  # 1 and 2  are not INDEX they are like: 1st frame, 2nd frame and so on.
   item2:
     type: "axe"  # use for multiple states of fishing rod or bows (those are pure hell to made them work)
+    item_model: "item2"
     model_data: 1  # you can have all your overrides/textures to be the same number as long as they are different items.
     animation:
       enable: true
@@ -63,7 +68,11 @@ pack:
     - "emoji1"
     - "emoji2"
   emoji1: # to test it use /tellraw @a {"text": "\uE001"}
-    chars: "\uE001" # This is the letter/character that the pack will replace with a png. It is recommended to use invalid chars like that one.
+    chars:
+    - "\uE001" # This is the letter/character that the pack will replace with a png. It is recommended to use invalid chars like that one.
+    type: "bitmap"
+    height: 10
+    ascent: 9
     animation:
       enable: true
       amount_of_frames: 2
@@ -72,7 +81,11 @@ pack:
       2:
         time: 5
   emoji2:
-    chars: "\uE002" # only one emoji per char. You can add rank tags with emojis.
+    chars:
+    - "\uE002" # only one emoji per char. You can add rank tags with emojis.
+    type: "bitmap"
+    height: 10
+    ascent: 9
     animation:
       enable: true
       amount_of_frames: 2
@@ -85,6 +98,7 @@ pack:
     - "hat2"
   hat1:
     remove_pumpkin: true
+    item_model: "hat1"
     animation:
       enable: true
       amount_of_frames: 2
@@ -94,6 +108,7 @@ pack:
         time: 5
   hat2:
     remove_pumpkin: true
+    item_model: "hat2"
     animation:
       enable: true
       amount_of_frames: 2

@@ -159,12 +159,40 @@ public class MainConfig {
         return configData.getInt("pack."+item+".model_data");
     }
 
+    public String getEmojiType(String emoji) {
+        String got = configData.getString("pack."+emoji+".type");
+        if (got == null) {
+            configData.set("pack."+emoji+".type", "bitmap");
+            reloadConfig();
+            return "bitmap";
+        } else {
+            return got;
+        }
+    }
+
+    public int getEmojiHeight(String emoji) {
+        return configData.getInt("pack."+emoji+".height");
+    }
+
+    public int getEmojiAscent(String emoji) {
+        return configData.getInt("pack."+emoji+".ascent");
+    }
+
     public boolean getRemovePumpkinHat(String hat) {
         return configData.getBoolean("pack."+hat+".remove_pumpkin");
     }
 
-    public int getEmojiChars(String emoji) {
-        return configData.getInt("pack."+emoji+".chars");
+    public List<String> getEmojiChars(String emoji) {
+        List<String> got = (List<String>) configData.getList("pack."+emoji+".chars");
+        if (got == null) {
+            List<String> array = new ArrayList<>();
+            array.add("\uE001");
+            configData.set("pack."+emoji+".chars", array);
+            reloadConfig();
+            return new ArrayList<>();
+        } else {
+            return got;
+        }
     }
 
     public String getItemType(String item) {
@@ -188,6 +216,18 @@ public class MainConfig {
 
     public int getItemAnimationFrameTime(String item, int frame) {
         return configData.getInt("pack."+item+".animation."+frame+".time");
+    }
+
+
+    public String getItemModel(String item) {
+        String got = configData.getString("pack."+item+".item_model");
+        if (got == null) {
+            configData.set("pack."+item+".item_model", item);
+            reloadConfig();
+            return item;
+        } else {
+            return got;
+        }
     }
 
 

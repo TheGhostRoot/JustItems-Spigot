@@ -79,7 +79,7 @@ public class PackHelper {
             main.saveResource("en_us.json", false);
             try {
                 Files.copy(langFile2.toPath(), langFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                if (langFile2.exists()){
+                if (langFile2.exists()) {
                     if (langFile2.delete()) {
                         plugin.getLogger().info("Deleted en_us.json");
                     } else {
@@ -132,8 +132,6 @@ public class PackHelper {
 
     public void generateResourcePack() {
         String packName = "MyResourcePack";
-        String packDescription = "This is a custom resource pack";
-        String packVersion = "1.0";
         File dataFolder = plugin.getDataFolder();
         File resourcePackFolder = new File(dataFolder, packName);
 
@@ -194,7 +192,7 @@ public class PackHelper {
                     new File(dataFolder, "pack/assets/minecraft/blockstates"));
 
             // Generate pack.mcmeta file
-            generatePackMcMeta(new File(dataFolder, "pack"), packDescription, packVersion);
+            generatePackMcMeta(new File(dataFolder, "pack"));
 
             copyFolder(new File(dataFolder, "pack"), resourcePackFolder);
 
@@ -249,8 +247,8 @@ public class PackHelper {
                 String imageName = file.getName();
                 String blockName = imageName.substring(0, imageName.lastIndexOf('.'));
                 File textureBlock = new File(textureFolder, file.getName());
-                File textureBlockMCMETA = new File(textureFolder, blockName+".png.mcmeta");
-                File modelBlock = new File(modelsFolder, blockName+".json");
+                File textureBlockMCMETA = new File(textureFolder, blockName + ".png.mcmeta");
+                File modelBlock = new File(modelsFolder, blockName + ".json");
                 File stateBlock = new File(stateFolder, "dirt.json");
                 if (modelBlock.isDirectory() && !modelBlock.exists()) {
                     if (modelBlock.mkdirs()) {
@@ -296,11 +294,11 @@ public class PackHelper {
                 array.add(ani1);
                 JsonObject frames = new JsonObject();
                 frames.add("frames", array);
-                addJsonToFile(textureBlockMCMETA, "animations", frames);
+                addJsonToFile(textureBlockMCMETA, "animation", frames);
 
                 // Model
                 JsonObject textures = new JsonObject();
-                textures.addProperty("all", "block/"+blockName);
+                textures.addProperty("all", "block/" + blockName);
                 JsonObject pare = new JsonObject();
                 pare.addProperty("parent", "block/cube_all");
                 pare.add("textures", textures);
@@ -309,7 +307,7 @@ public class PackHelper {
                 // State blocks
                 JsonObject models = new JsonObject();
                 JsonObject models2 = new JsonObject();
-                models2.addProperty("model", "block/"+blockName);
+                models2.addProperty("model", "block/" + blockName);
                 models.add("", models2);
                 addJsonToFile(stateBlock, "variants", models);
             }
@@ -353,6 +351,18 @@ public class PackHelper {
     public void addJsonToFile(File file, String key, int value) {
         JsonObject json = new JsonObject();
         json.addProperty(key, value);
+
+        // Write the JSON string to a file
+        try (FileWriter writer = new FileWriter(file)) {
+            writer.write(new GsonBuilder().setPrettyPrinting().create().toJson(json));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addJsonToFile(File file, String key, JsonArray value) {
+        JsonObject json = new JsonObject();
+        json.add(key, value);
 
         // Write the JSON string to a file
         try (FileWriter writer = new FileWriter(file)) {
@@ -439,63 +449,162 @@ public class PackHelper {
         }
 
         File[] files = sourceFolder.listFiles();
-        if (files != null) {
-            for (String filePath : plugin.config.getItems()) {
-                // new_items/item
-                if (filePath.contains(".")) {
-                    filePath = filePath.substring(0, filePath.lastIndexOf('.'));
-                }
-                File SourceItem = new File(sourceFolder, filePath+".png");
-                File DestinationItem = new File(texturesItemFolder, filePath+".png");
-                if (!DestinationItem.exists()) {
+        if (files == null) {
+            return;
+        }
 
-                }
-                Files.copy(SourceItem.toPath(), DestinationItem.toPath(),
-                        StandardCopyOption.REPLACE_EXISTING);
+        for (String filePath : plugin.config.getItems()) {
+            // new_items/item
+            if (filePath.contains(".")) {
+                filePath = filePath.substring(0, filePath.lastIndexOf('.'));
             }
-            for (File justFile : files) {
-                String imageName = justFile.getName();
-                String itemName = imageName.substring(0, imageName.lastIndexOf('.'));
+            File SourceItem = new File(sourceFolder, filePath + ".png");
+            if (!SourceItem.exists()) {
+                return;
+            }
 
-                if (justFile.isDirectory() && !justFile.exists()) {
-                    if (justFile.mkdirs()) {
-                        plugin.getLogger().info("Made a folder " + justFile.getName());
+            StringBuilder dir = new StringBuilder();
+            String[] dirs = filePath.split("/");
+            for (int i = 0; i < dirs.length - 1; i++) {
+                dir.append("/").append(dirs[i]);
+            }
 
-                    } else {
-                        plugin.getLogger().info("Can't make a folder " + justFile.getName());
-                    }
+            File destFolder = new File(texturesItemFolder, dir.toString());
+            if (!destFolder.exists()) {
+                if (destFolder.mkdirs()) {
+                    plugin.getLogger().info("Made a folder " + destFolder.getName());
                 } else {
-                    Files.copy(justFile.toPath(), new File(texturesItemFolder, imageName).toPath(),
-                            StandardCopyOption.REPLACE_EXISTING);
+                    plugin.getLogger().info("Can't make a folder " + destFolder.getName());
+                    return;
+                }
+            }
+            File DestinationItem = new File(texturesItemFolder, filePath + ".png");
+            if (!DestinationItem.exists()) {
+                if (DestinationItem.createNewFile()) {
+                    plugin.getLogger().info("Made a file " + DestinationItem.getName());
+                } else {
+                    plugin.getLogger().info("Can't make a file " + DestinationItem.getName());
+                    return;
+                }
+            }
+
+            Files.copy(SourceItem.toPath(), DestinationItem.toPath(),
+                    StandardCopyOption.REPLACE_EXISTING);
+
+            if (plugin.config.isItemAnimationEnabled(filePath)) {
+                generateMcmetaAnimation(texturesItemFolder, filePath);
+            }
+
+            String itemModel = plugin.config.getItemModel(filePath);
+            File SourceModel = new File(sourceFolder, itemModel + ".json");
+            if (SourceModel.exists()) {
+                File DestinationModel = new File(modelFile, itemModel + ".json");
+                if (!DestinationModel.exists()) {
+                    if (DestinationModel.createNewFile()) {
+                        plugin.getLogger().info("Made a file " + DestinationModel.getName());
+                        Files.copy(SourceModel.toPath(), DestinationItem.toPath(),
+                                StandardCopyOption.REPLACE_EXISTING);
+                    } else {
+                        plugin.getLogger().info("Can't make a file " + DestinationModel.getName());
+                    }
+                }
+            } else {
+
+                String itemType = plugin.config.getItemType(filePath);
+                File modelFileType = new File(modelFile, itemType + ".json");
+
+                StringBuilder modelDir = new StringBuilder();
+                String[] modelDirSplit = filePath.split("/");
+                for (int i = 0; i < modelDirSplit.length - 1; i++) {
+                    modelDir.append("/").append(modelDirSplit[i]);
                 }
 
-                JsonObject parent = new JsonObject();
+                StringBuilder modelDirType = new StringBuilder();
+                String[] modelDirSplitType = itemType.split("/");
+                for (int i = 0; i < modelDirSplitType.length - 1; i++) {
+                    modelDirType.append("/").append(modelDirSplitType[i]);
+                }
+
+                File modelFilePath = new File(modelFile, modelDir.toString());
+                File modelFileJson = new File(modelFile, filePath + ".json");
+
+                if (!modelFilePath.exists()) {
+                    if (modelFilePath.mkdirs()) {
+                        plugin.getLogger().info("Made a folder " + modelFilePath.getName());
+                    } else {
+                        plugin.getLogger().info("Can't make a folder " + modelFilePath.getName());
+                        return;
+                    }
+                }
+
+                if (!modelFileJson.exists()) {
+                    if (modelFileJson.createNewFile()) {
+                        plugin.getLogger().info("Made a file " + modelFileJson.getName());
+                    } else {
+                        plugin.getLogger().info("Can't make a file " + modelFileJson.getName());
+                        return;
+                    }
+                }
+
+                File modelFileTypeFolder = new File(modelFile, modelDirType.toString());
+
+                if (!modelFileTypeFolder.exists()) {
+                    if (modelFileTypeFolder.mkdirs()) {
+                        plugin.getLogger().info("Made a folder " + modelFileTypeFolder.getName());
+                    } else {
+                        plugin.getLogger().info("Can't make a folder " + modelFileTypeFolder.getName());
+                        return;
+                    }
+                }
+
+                if (!modelFileType.exists()) {
+                    if (modelFileType.createNewFile()) {
+                        plugin.getLogger().info("Made a file " + modelFileType.getName());
+                    } else {
+                        plugin.getLogger().info("Can't make a file " + modelFileType.getName());
+                        return;
+                    }
+                }
+
+                // Model
+                JsonObject Model = new JsonObject();
+                JsonObject texturesModel = new JsonObject();
+                texturesModel.addProperty("layer0", "item/" + filePath);
+                Model.addProperty("parent", "item/handheld");
+                Model.add("textures", texturesModel);
+                addJsonToFile(modelFileJson, Model);
+
+                // Item type model
+                JsonObject OverrideModel = new JsonObject();
                 JsonObject textures = new JsonObject();
-                textures.addProperty("layer0", "item/"+itemName);
-                parent.addProperty("parent", "item/handheld");
-                parent.add("textures", textures);
+                textures.addProperty("layer0", "item/" + itemType);
+                OverrideModel.addProperty("parent", "item/handheld");
+                OverrideModel.add("textures", textures);
                 // overrides
-                JsonArray array = new JsonArray();
+                JsonArray overrides = new JsonArray();
                 JsonObject override = new JsonObject();
-                JsonObject predicete = new JsonObject();
-                predicete.addProperty("custom_model_data", 1);
-                override.addProperty("model", "item/"+itemName);
-                override.add("predicate",predicete);
-                array.add(override);
-                parent.add("overrides", array);
-                addJsonToFile(new File(modelFile, itemName + ".json"), parent);
-
-                JsonArray array2 = new JsonArray();
-                JsonObject ani1 = new JsonObject();
-                ani1.addProperty("index", 0);
-                ani1.addProperty("time", 10);
-                array2.add(ani1);
-                JsonObject frames = new JsonObject();
-                frames.add("frames", array2);
-                addJsonToFile(new File(texturesItemFolder, itemName + ".png.mcmeta"), "animations", frames);
-
+                JsonObject overrideModel = new JsonObject();
+                overrideModel.addProperty("custom_model_data", plugin.config.getItemModelData(filePath));
+                override.addProperty("model", "item/" + filePath);
+                override.add("predicate", overrideModel);
+                overrides.add(override);
+                OverrideModel.add("overrides", overrides);
+                addJsonToFile(modelFileType, OverrideModel);
             }
         }
+    }
+
+    private void generateMcmetaAnimation(File texturesItemFolder, String filePath) {
+        JsonArray animation = new JsonArray();
+        for (int i = 0; i < plugin.config.getItemAnimationFrames(filePath); i++) {
+            JsonObject ani1 = new JsonObject();
+            ani1.addProperty("index", i);
+            ani1.addProperty("time", plugin.config.getItemAnimationFrameTime(filePath, i + 1));
+            animation.add(ani1);
+        }
+        JsonObject frames = new JsonObject();
+        frames.add("frames", animation);
+        addJsonToFile(new File(texturesItemFolder, filePath + ".png.mcmeta"), "animation", frames);
     }
 
     public void copyFonts(File emojisFolder, File texturesFontFolder) throws IOException {
@@ -516,38 +625,72 @@ public class PackHelper {
         }
 
         File[] imageFiles = emojisFolder.listFiles();
-        if (imageFiles != null) {
-            for (File imageFile : imageFiles) {
-                String imageName = imageFile.getName();
-                // TODO Add emojis to default font
-                if (imageFile.isDirectory() && !imageFile.exists()) {
-                    if (imageFile.mkdirs()) {
-                        plugin.getLogger().info("Made a folder " + imageFile.getName());
-                    } else {
-                        plugin.getLogger().info("Can't make a folder " + imageFile.getName());
-                    }
-                } else {
-                    Files.copy(imageFile.toPath(), new File(texturesFontFolder, imageName).toPath(),
-                            StandardCopyOption.REPLACE_EXISTING);
-                }
-                JsonArray array2 = new JsonArray();
-                JsonObject ani1 = new JsonObject();
-                ani1.addProperty("index", 0);
-                ani1.addProperty("time", 10);
-                array2.add(ani1);
-                JsonObject frames = new JsonObject();
-                frames.add("frames", array2);
-                addJsonToFile(new File(texturesFontFolder, imageName + ".mcmeta"), "animations", frames);
-            }
+        if (imageFiles == null) {
+            return;
         }
-        reloadFont();
+
+        JsonArray providers = new JsonArray();
+
+
+        for (String filePath : plugin.config.getEmojis()) {
+
+            File SourceFont = new File(emojisFolder, filePath + ".png");
+            if (!SourceFont.exists()) {
+                return;
+            }
+
+            StringBuilder dir = new StringBuilder();
+            String[] dirs = filePath.split("/");
+            for (int i = 0; i < dirs.length - 1; i++) {
+                dir.append("/").append(dirs[i]);
+            }
+
+            File destFolder = new File(texturesFontFolder, dir.toString());
+            if (!destFolder.exists()) {
+                if (destFolder.mkdirs()) {
+                    plugin.getLogger().info("Made a folder " + destFolder.getName());
+                } else {
+                    plugin.getLogger().info("Can't make a folder " + destFolder.getName());
+                    return;
+                }
+            }
+            File DestinationItem = new File(texturesFontFolder, filePath + ".png");
+            if (!DestinationItem.exists()) {
+                if (DestinationItem.createNewFile()) {
+                    plugin.getLogger().info("Made a file " + DestinationItem.getName());
+                } else {
+                    plugin.getLogger().info("Can't make a file " + DestinationItem.getName());
+                    return;
+                }
+            }
+
+            Files.copy(SourceFont.toPath(), DestinationItem.toPath(),
+                    StandardCopyOption.REPLACE_EXISTING);
+
+            if (plugin.config.isItemAnimationEnabled(filePath)) {
+                generateMcmetaAnimation(texturesFontFolder, filePath);
+            }
+
+            JsonObject font = new JsonObject();
+            font.addProperty("type", plugin.config.getEmojiType(filePath));
+            font.addProperty("file", "minecraft:font/"+filePath+".png");
+            font.addProperty("height", plugin.config.getEmojiHeight(filePath));
+            font.addProperty("ascent", plugin.config.getEmojiAscent(filePath));
+            JsonArray charsStuff = new JsonArray();
+            for (String c : plugin.config.getEmojiChars(filePath)) {
+                charsStuff.add(c);
+            }
+            font.add("chars", charsStuff);
+            providers.add(font);
+        }
+        addJsonToFile(defaultFontFile, "providers", providers);
     }
 
-    public void generatePackMcMeta(File resourcePackFolder, String packDescription, String packVersion) throws IOException {
+    public void generatePackMcMeta(File resourcePackFolder) throws IOException {
         JsonObject pack = new JsonObject();
         JsonObject pack2 = new JsonObject();
-        pack.addProperty("pack_format", packVersion);
-        pack.addProperty("description", packDescription);
+        pack.addProperty("pack_format", plugin.config.getPackFormat());
+        pack.addProperty("description", plugin.config.getPackDescription());
         pack2.add("pack", pack);
         addJsonToFile(new File(resourcePackFolder, "pack.mcmeta"), pack2);
     }
@@ -582,7 +725,6 @@ public class PackHelper {
             }
         }
     }
-
 
 
     public void sendResourcePackToPlayers(File data, String name) throws IOException {
@@ -626,7 +768,6 @@ public class PackHelper {
         saveLang();
         loadLang();
     }
-
 
 
     public void saveLang() {
