@@ -20,13 +20,15 @@ pack:
     - "block1"
     - "block2"
   block1:  # blocks don't have model data. At least for the time being, so you will replace/override already existing block with yours
-    type: "dirt" # what type of block it will be
+    type: "dirt" # what type of block it will be. You can't have multiple textures for the same block.
     item_model: "block1"
     sides:
-      bottom: "blockDown" # the textures for the bottom side of the block
-      side: "blockSide" # the textures for side of the block
-      top: "blockTop" # the textures for the top side of the block
-      front: "blockFront" # the textures for the front side of the block
+      south: "blockSouth"
+      north: "blockNorth"
+      east: "blockEast"
+      west: "blockWest"
+      up: "blockUp"
+      down: "blockDown"
       particle: "blockParticle" # the textures for the particle of the block
     animation:
       enable: true  # if you have animations.
@@ -39,11 +41,13 @@ pack:
     type: "stone_slab"  # use _ instead of space
     item_model: "block2"
     sides:
-      bottom: "blockDown"
-      side: "blockSide"
-      top: "blockTop"
-      front: "blockFront"
-      particle: "blockParticle"
+      south: "blockSouth"
+      north: "blockNorth"
+      east: "blockEast"
+      west: "blockWest"
+      up: "blockUp"
+      down: "blockDown"
+      particle: "blockParticle" # the textures for the particle of the block
     animation:
       enable: true
       amount_of_frames: 2

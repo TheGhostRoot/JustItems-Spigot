@@ -206,45 +206,67 @@ public class MainConfig {
         }
     }
 
-    public String getBlockBottom(String block) {
-        String got = configData.getString("pack."+block+".sides.bottom");
+    public String getBlockSouth(String block) {
+        String got = configData.getString("pack."+block+".sides.south");
         if (got == null) {
-            configData.set("pack."+block+".sides.bottom", "blockDown");
+            configData.set("pack."+block+".sides.south", "blockSouth");
+            reloadConfig();
+            return "blockSouth";
+        } else {
+            return got;
+        }
+    }
+
+    public String getBlockNorth(String block) {
+        String got = configData.getString("pack."+block+".sides.north");
+        if (got == null) {
+            configData.set("pack."+block+".sides.north", "blockNorth");
+            reloadConfig();
+            return "blockNorth";
+        } else {
+            return got;
+        }
+    }
+
+    public String getBlockEast(String block) {
+        String got = configData.getString("pack."+block+".sides.east");
+        if (got == null) {
+            configData.set("pack."+block+".sides.east", "blockEast");
+            reloadConfig();
+            return "blockEast";
+        } else {
+            return got;
+        }
+    }
+
+    public String getBlockWest(String block) {
+        String got = configData.getString("pack."+block+".sides.west");
+        if (got == null) {
+            configData.set("pack."+block+".sides.west", "blockWest");
+            reloadConfig();
+            return "blockWest";
+        } else {
+            return got;
+        }
+    }
+
+    public String getBlockUp(String block) {
+        String got = configData.getString("pack."+block+".sides.up");
+        if (got == null) {
+            configData.set("pack."+block+".sides.up", "blockUp");
+            reloadConfig();
+            return "blockUp";
+        } else {
+            return got;
+        }
+    }
+
+    public String getBlockDown(String block) {
+        String got = configData.getString("pack."+block+".sides.down");
+        if (got == null) {
+            configData.set("pack."+block+".sides.down", "blockDown");
             reloadConfig();
             return "blockDown";
-        } else {
-            return got;
-        }
-    }
-
-    public String getBlockSide(String block) {
-        String got = configData.getString("pack."+block+".sides.side");
-        if (got == null) {
-            configData.set("pack."+block+".sides.side", "blockSide");
-            reloadConfig();
-            return "blockSide";
-        } else {
-            return got;
-        }
-    }
-
-    public String getBlockTop(String block) {
-        String got = configData.getString("pack."+block+".sides.top");
-        if (got == null) {
-            configData.set("pack."+block+".sides.top", "blockTop");
-            reloadConfig();
-            return "blockTop";
-        } else {
-            return got;
-        }
-    }
-
-    public String getBlockFront(String block) {
-        String got = configData.getString("pack."+block+".sides.front");
-        if (got == null) {
-            configData.set("pack."+block+".sides.front", "blockFront");
-            reloadConfig();
-            return "blockFront";
         } else {
             return got;
         }

@@ -245,8 +245,10 @@ public class PackHelper {
         if (files == null) { return; }
         for (String filePath : plugin.config.getBlocks()) {
 
+            File BlockStates = new File(stateFolder, plugin.config.getItemType(filePath)+".json");
             File SourceBlock = new File(sourceFolder, filePath+".png");
-            if (!SourceBlock.exists())  { return; }
+
+            if (BlockStates.exists() || !SourceBlock.exists()) { return; }
 
             File BlockTextureFolder = new File(textureFolder, getDirByFilePath(filePath).toString());
             if (!BlockTextureFolder.exists()) {
@@ -313,105 +315,154 @@ public class PackHelper {
                 parent.add("textures", textures);
                 addJsonToFile(ModelBlockFileCreate, parent);
                  */
-                String blockBottom = plugin.config.getBlockBottom(filePath);
-                String blockSide = plugin.config.getBlockSide(filePath);
-                String blockTop = plugin.config.getBlockTop(filePath);
-                String blockFront = plugin.config.getBlockFront(filePath);
+                String blockNorth = plugin.config.getBlockNorth(filePath);
+                String blockSouth = plugin.config.getBlockSouth(filePath);
+                String blockEast = plugin.config.getBlockEast(filePath);
+                String blockWest = plugin.config.getBlockWest(filePath);
+                String blockUp = plugin.config.getBlockUp(filePath);
+                String blockDown = plugin.config.getBlockDown(filePath);
                 String blockPart = plugin.config.getBlockParticle(filePath);
 
-                File SourceBottomFolder = new File(sourceFolder, getDirByFilePath(blockBottom).toString());
-                File SourceSideFolder = new File(sourceFolder, getDirByFilePath(blockSide).toString());
-                File SourceTopFolder = new File(sourceFolder, getDirByFilePath(blockTop).toString());
-                File SourceFrontFolder = new File(sourceFolder, getDirByFilePath(blockFront).toString());
-                File SourcePartFolder = new File(sourceFolder, getDirByFilePath(blockPart).toString());
+                String northDir = getDirByFilePath(blockNorth).toString();
+                String southDir = getDirByFilePath(blockSouth).toString();
+                String eastDir = getDirByFilePath(blockEast).toString();
+                String westDir = getDirByFilePath(blockWest).toString();
+                String upDir = getDirByFilePath(blockUp).toString();
+                String downDir = getDirByFilePath(blockDown).toString();
+                String particDir = getDirByFilePath(blockPart).toString();
 
-                if (!SourceBottomFolder.exists() || !SourceSideFolder.exists() ||
-                        !SourceTopFolder.exists() || !SourceFrontFolder.exists() || !SourcePartFolder.exists()) {
+                File SourceNorthFolder = new File(sourceFolder, northDir);
+                File SourceSouthFolder = new File(sourceFolder, southDir);
+                File SourceEastFolder = new File(sourceFolder, eastDir);
+                File SourceWestFolder = new File(sourceFolder, westDir);
+                File SourceUpFolder = new File(sourceFolder, upDir);
+                File SourceDownFolder = new File(sourceFolder, downDir);
+                File SourcePartFolder = new File(sourceFolder, particDir);
+
+                if (!SourceNorthFolder.exists() || !SourceSouthFolder.exists() ||
+                        !SourceEastFolder.exists() || !SourceWestFolder.exists() ||
+                        !SourcePartFolder.exists() || !SourceUpFolder.exists() || !SourceDownFolder.exists()) {
                     plugin.getLogger().info("One of the sides is incorrect!");
                     return;
                 }
 
-                File TextureBottomFolder = new File(textureFolder, getDirByFilePath(blockBottom).toString());
-                File TextureSideFolder = new File(textureFolder, getDirByFilePath(blockSide).toString());
-                File TextureTopFolder = new File(textureFolder, getDirByFilePath(blockTop).toString());
-                File TextureFrontFolder = new File(textureFolder, getDirByFilePath(blockFront).toString());
-                File TexturePartFolder = new File(textureFolder, getDirByFilePath(blockPart).toString());
+                File TextureNorthFolder = new File(textureFolder, northDir);
+                File TextureSouthFolder = new File(textureFolder, southDir);
+                File TextureEastFolder = new File(textureFolder, eastDir);
+                File TextureWestFolder = new File(textureFolder, westDir);
+                File TextureUpFolder = new File(textureFolder, upDir);
+                File TextureDownFolder = new File(textureFolder, downDir);
+                File TextureParticFolder = new File(textureFolder, particDir);
 
-                if (!TextureBottomFolder.exists()) {
-                    if (TextureBottomFolder.mkdirs()) {
-                        plugin.getLogger().info("Made a folder "+TextureBottomFolder.getName());
+                if (!TextureNorthFolder.exists()) {
+                    if (TextureNorthFolder.mkdirs()) {
+                        plugin.getLogger().info("Made a folder "+TextureNorthFolder.getName());
                     } else {
-                        plugin.getLogger().info("Can't make a folder "+TextureBottomFolder.getName());
+                        plugin.getLogger().info("Can't make a folder "+TextureNorthFolder.getName());
                     }
                 }
 
-                if (!TextureSideFolder.exists()) {
-                    if (TextureSideFolder.mkdirs()) {
-                        plugin.getLogger().info("Made a folder "+TextureSideFolder.getName());
+                if (!TextureSouthFolder.exists()) {
+                    if (TextureSouthFolder.mkdirs()) {
+                        plugin.getLogger().info("Made a folder "+TextureSouthFolder.getName());
                     } else {
-                        plugin.getLogger().info("Can't make a folder "+TextureSideFolder.getName());
+                        plugin.getLogger().info("Can't make a folder "+TextureSouthFolder.getName());
                     }
                 }
 
-                if (!TextureTopFolder.exists()) {
-                    if (TextureTopFolder.mkdirs()) {
-                        plugin.getLogger().info("Made a folder "+TextureTopFolder.getName());
+                if (!TextureEastFolder.exists()) {
+                    if (TextureEastFolder.mkdirs()) {
+                        plugin.getLogger().info("Made a folder "+TextureEastFolder.getName());
                     } else {
-                        plugin.getLogger().info("Can't make a folder "+TextureTopFolder.getName());
+                        plugin.getLogger().info("Can't make a folder "+TextureEastFolder.getName());
                     }
                 }
 
-                if (!TextureFrontFolder.exists()) {
-                    if (TextureFrontFolder.mkdirs()) {
-                        plugin.getLogger().info("Made a folder "+TextureFrontFolder.getName());
+                if (!TextureWestFolder.exists()) {
+                    if (TextureWestFolder.mkdirs()) {
+                        plugin.getLogger().info("Made a folder "+TextureWestFolder.getName());
                     } else {
-                        plugin.getLogger().info("Can't make a folder "+TextureFrontFolder.getName());
+                        plugin.getLogger().info("Can't make a folder "+TextureWestFolder.getName());
                     }
                 }
 
-                if (!TexturePartFolder.exists()) {
-                    if (TexturePartFolder.mkdirs()) {
-                        plugin.getLogger().info("Made a folder "+TexturePartFolder.getName());
+                if (!TextureUpFolder.exists()) {
+                    if (TextureUpFolder.mkdirs()) {
+                        plugin.getLogger().info("Made a folder "+TextureUpFolder.getName());
                     } else {
-                        plugin.getLogger().info("Can't make a folder "+TexturePartFolder.getName());
+                        plugin.getLogger().info("Can't make a folder "+TextureUpFolder.getName());
                     }
                 }
 
-                File TextureBottomFile = new File(textureFolder, blockBottom+".png");
-                File TextureSideFile = new File(textureFolder, blockSide +".png");
-                File TextureTopFile = new File(textureFolder, blockTop +".png");
-                File TextureFrontFile = new File(textureFolder, blockFront +".png");
+                if (!TextureDownFolder.exists()) {
+                    if (TextureDownFolder.mkdirs()) {
+                        plugin.getLogger().info("Made a folder "+TextureDownFolder.getName());
+                    } else {
+                        plugin.getLogger().info("Can't make a folder "+TextureDownFolder.getName());
+                    }
+                }
+
+                if (!TextureParticFolder.exists()) {
+                    if (TextureParticFolder.mkdirs()) {
+                        plugin.getLogger().info("Made a folder "+TextureParticFolder.getName());
+                    } else {
+                        plugin.getLogger().info("Can't make a folder "+TextureParticFolder.getName());
+                    }
+                }
+
+                File TextureNorthFile = new File(textureFolder, blockNorth+".png");
+                File TextureSouthFile = new File(textureFolder, blockSouth +".png");
+                File TextureEastFile = new File(textureFolder, blockEast +".png");
+                File TextureWestFile = new File(textureFolder, blockWest +".png");
+                File TextureUpFile = new File(textureFolder, blockUp +".png");
+                File TextureDownFile = new File(textureFolder, blockDown +".png");
                 File TexturePartFile = new File(textureFolder, blockPart +".png");
 
-                if (!TextureBottomFile.exists()) {
-                    if (TextureBottomFile.createNewFile()) {
-                        plugin.getLogger().info("Made a file "+TextureBottomFile.getName());
+                if (!TextureNorthFile.exists()) {
+                    if (TextureNorthFile.createNewFile()) {
+                        plugin.getLogger().info("Made a file "+TextureNorthFile.getName());
                     } else {
-                        plugin.getLogger().info("Can't make a file "+TextureBottomFile.getName());
+                        plugin.getLogger().info("Can't make a file "+TextureNorthFile.getName());
                     }
                 }
 
-                if (!TextureSideFile.exists()) {
-                    if (TextureSideFile.createNewFile()) {
-                        plugin.getLogger().info("Made a file "+TextureSideFile.getName());
+                if (!TextureSouthFile.exists()) {
+                    if (TextureSouthFile.createNewFile()) {
+                        plugin.getLogger().info("Made a file "+TextureSouthFile.getName());
                     } else {
-                        plugin.getLogger().info("Can't make a file "+TextureSideFile.getName());
+                        plugin.getLogger().info("Can't make a file "+TextureSouthFile.getName());
                     }
                 }
 
-                if (!TextureTopFile.exists()) {
-                    if (TextureTopFile.createNewFile()) {
-                        plugin.getLogger().info("Made a file "+TextureTopFile.getName());
+                if (!TextureEastFile.exists()) {
+                    if (TextureEastFile.createNewFile()) {
+                        plugin.getLogger().info("Made a file "+TextureEastFile.getName());
                     } else {
-                        plugin.getLogger().info("Can't make a file "+TextureTopFile.getName());
+                        plugin.getLogger().info("Can't make a file "+TextureEastFile.getName());
                     }
                 }
 
-                if (!TextureFrontFile.exists()) {
-                    if (TextureFrontFile.createNewFile()) {
-                        plugin.getLogger().info("Made a file "+TextureFrontFile.getName());
+                if (!TextureWestFile.exists()) {
+                    if (TextureWestFile.createNewFile()) {
+                        plugin.getLogger().info("Made a file "+TextureWestFile.getName());
                     } else {
-                        plugin.getLogger().info("Can't make a file "+TextureFrontFile.getName());
+                        plugin.getLogger().info("Can't make a file "+TextureWestFile.getName());
+                    }
+                }
+
+                if (!TextureUpFile.exists()) {
+                    if (TextureUpFile.createNewFile()) {
+                        plugin.getLogger().info("Made a file "+TextureUpFile.getName());
+                    } else {
+                        plugin.getLogger().info("Can't make a file "+TextureUpFile.getName());
+                    }
+                }
+
+                if (!TextureDownFile.exists()) {
+                    if (TextureDownFile.createNewFile()) {
+                        plugin.getLogger().info("Made a file "+TextureDownFile.getName());
+                    } else {
+                        plugin.getLogger().info("Can't make a file "+TextureDownFile.getName());
                     }
                 }
 
@@ -423,61 +474,88 @@ public class PackHelper {
                     }
                 }
 
-                Files.copy(new File(sourceFolder, blockBottom+".png").toPath(), TextureBottomFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                Files.copy(new File(sourceFolder, blockSide +".png").toPath(), TextureSideFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                Files.copy(new File(sourceFolder, blockTop +".png").toPath(), TextureTopFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                Files.copy(new File(sourceFolder, blockFront +".png").toPath(), TextureFrontFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(new File(sourceFolder, blockNorth+".png").toPath(), TextureNorthFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(new File(sourceFolder, blockSouth +".png").toPath(), TextureSouthFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(new File(sourceFolder, blockEast +".png").toPath(), TextureEastFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(new File(sourceFolder, blockWest +".png").toPath(), TextureWestFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(new File(sourceFolder, blockUp +".png").toPath(), TextureUpFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(new File(sourceFolder, blockDown +".png").toPath(), TextureDownFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 Files.copy(new File(sourceFolder, blockPart +".png").toPath(), TexturePartFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
                 JsonObject block = new JsonObject();
-                block.addProperty("parent", "block/block");
-                JsonObject AllTextuers = new JsonObject();
+                block.addProperty("parent", "block/cube");
                 JsonObject textuers = new JsonObject();
-                textuers.addProperty("bottom", blockBottom);
-                textuers.addProperty("side", blockSide);
-                textuers.addProperty("top", blockTop);
-                textuers.addProperty("front", blockFront);
-                textuers.addProperty("particle", blockPart);
-                AllTextuers.add("textures", textuers);
-
+                textuers.addProperty("north", "minecraft:block/"+blockNorth);
+                textuers.addProperty("south", "minecraft:block/"+blockSouth);
+                textuers.addProperty("east", "minecraft:block/"+blockEast);
+                textuers.addProperty("west","minecraft:block/"+ blockWest);
+                textuers.addProperty("up", "minecraft:block/"+blockUp);
+                textuers.addProperty("down", "minecraft:block/"+blockDown);
+                textuers.addProperty("particle", "minecraft:block/"+blockPart);
+                block.add("textures", textuers);
+                addJsonToFile(ModelBlockFileCreate, block);
+                /*
                 JsonArray elements = new JsonArray();
                 JsonObject element = new JsonObject();
-                element.addProperty("from", "[0, 0, 0]");
-                element.addProperty("to", "[16, 16, 16]");
+                JsonArray b = new JsonArray();
+                b.add(0);
+                b.add(0);
+                b.add(0);
+                element.add("from", b);
+                JsonArray b1 = new JsonArray();
+                b1.add(16);
+                b1.add(16);
+                b1.add(16);
+                element.add("to", b1);
 
                 JsonObject faces = new JsonObject();
                 JsonObject downFace = new JsonObject();
-                downFace.addProperty("uv", "[0, 0, 16, 16]");
+                JsonArray uvArray = new JsonArray();
+                uvArray.add(0);
+                uvArray.add(0);
+                uvArray.add(16);
+                uvArray.add(16);
+                downFace.add("uv", uvArray);
                 downFace.addProperty("texture", "#top");
                 downFace.addProperty("cullface", "down");
                 faces.add("down", downFace);
 
                 JsonObject upFace = new JsonObject();
-                upFace.addProperty("uv", "[0, 16, 16, 0]");
+                JsonArray a = new JsonArray();
+                a.add(0);
+                a.add(16);
+                a.add(16);
+                a.add(0);
+                downFace.add("uv", a);
                 upFace.addProperty("texture", "#top");
                 upFace.addProperty("cullface", "up");
                 faces.add("up", upFace);
 
                 JsonObject northFace = new JsonObject();
-                northFace.addProperty("uv", "[0, 0, 16, 16]");
+                JsonArray b2 = new JsonArray();
+                b2.add(0);
+                b2.add(0);
+                b2.add(16);
+                b2.add(16);
+                northFace.add("uv", b2);
                 northFace.addProperty("texture", "#front");
                 northFace.addProperty("cullface", "north");
                 faces.add("north", northFace);
 
                 JsonObject southFace = new JsonObject();
-                southFace.addProperty("uv", "[0, 0, 16, 16]");
+                southFace.add("uv", b2);
                 southFace.addProperty("texture", "#bottom");
                 southFace.addProperty("cullface", "south");
                 faces.add("south", southFace);
 
                 JsonObject westFace = new JsonObject();
-                westFace.addProperty("uv", "[0, 0, 16, 16]");
+                westFace.add("uv", b2);
                 westFace.addProperty("texture", "#side");
                 westFace.addProperty("cullface", "west");
                 faces.add("west", westFace);
 
                 JsonObject eastFace = new JsonObject();
-                eastFace.addProperty("uv", "[0, 0, 16, 16]");
+                eastFace.add("uv", b2);
                 eastFace.addProperty("texture", "#side");
                 eastFace.addProperty("cullface", "east");
                 faces.add("east", eastFace);
@@ -487,9 +565,9 @@ public class PackHelper {
 
                 block.add("elements", elements);
                 addJsonToFile(ModelBlockFileCreate, block);
+                 */
             }
 
-            File BlockStates = new File(stateFolder, plugin.config.getItemType(filePath)+".json");
             if (!BlockStates.exists()) {
                 if (BlockStates.createNewFile()) {
                     plugin.getLogger().info("Made a file " + BlockStates.getName());
