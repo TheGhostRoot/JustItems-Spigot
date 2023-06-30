@@ -21,6 +21,8 @@ messages:
 # So generate the pack the first time. Copy over the default HUD images to anywhere except the pack folder.
 # When you are done with the HUD textures DON'T put them back if you are not done with the pack.
 # Once you sure the pack is ready then you can copy them over to the assets/minecraft/textures/gui  after the generation.
+#
+# REMEMBER! All textures should be in lower case. This plugin won't convert it to lower case since it can brake something.
 # ---------------------------------------------------
 pack:
   format: 7  # https://minecraft.fandom.com/wiki/Pack_format
