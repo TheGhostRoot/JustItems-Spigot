@@ -14,6 +14,14 @@ messages:
 # Use only "/" for folders. If you want to change the bars or the Widgets or anything else. You can go to pack/assets/minecraft/textures/gui
 # and change it there. The plugin will only create the folders and the .png files if they were deleted or didn't exist
 
+
+# ---------------------------------------------------
+#  WARNING!!! The HUD will be generated after you generate the pack.
+# When the pack is being generated all the HUD will be replaced with the default one.
+# So generate the pack the first time. Copy over the default HUD images to anywhere except the pack folder.
+# When you are done with the HUD textures DON'T put them back if you are not done with the pack.
+# Once you sure the pack is ready then you can copy them over to the assets/minecraft/textures/gui  after the generation.
+# ---------------------------------------------------
 pack:
   format: 7  # https://minecraft.fandom.com/wiki/Pack_format
   description: "Your own pack"

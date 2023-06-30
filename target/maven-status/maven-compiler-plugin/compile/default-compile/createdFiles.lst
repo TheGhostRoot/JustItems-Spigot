@@ -1,8 +1,8 @@
-me\justitems\JustItems.class
 me\justitems\PackHelper.class
-me\justitems\commands\HelpMenu.class
-me\justitems\commands\MainCommand.class
 me\justitems\Utils.class
-me\justitems\commands\MainTabComplete.class
-me\justitems\commands\SetTextures.class
 me\justitems\commands\MainConfig.class
+me\justitems\commands\SetTextures.class
+me\justitems\JustItems.class
+me\justitems\commands\HelpMenu.class
+me\justitems\commands\MainTabComplete.class
+me\justitems\commands\MainCommand.class
