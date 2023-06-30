@@ -114,9 +114,15 @@ public class PackHelper {
         pack.add("pack/assets/minecraft/textures/block");
         pack.add("pack/assets/minecraft/models/block");
         pack.add("pack/assets/minecraft/textures/misc");
+        pack.add("pack/assets/minecraft/textures/gui");
+        pack.add("pack/assets/minecraft/textures/gui/advancements");
+        pack.add("pack/assets/minecraft/textures/gui/advancements/backgrounds");
+        pack.add("pack/assets/minecraft/textures/gui/container");
+        pack.add("pack/assets/minecraft/textures/gui/container/creative_inventory");
         pack.add("items");
         pack.add("emojis");
         pack.add("blocks");
+        pack.add("hats");
         for (String folder : pack) {
             File f = new File(dataFolder, folder);
             if (!f.exists()) {
@@ -129,6 +135,448 @@ public class PackHelper {
         }
     }
 
+    public void loadGUI(File gui) throws IOException {
+        File dataFolder = plugin.getDataFolder();
+
+        plugin.saveResource("accessibility.png", true);
+        plugin.saveResource("bars.png", true);
+        plugin.saveResource("book.png", true);
+        plugin.saveResource("checkbox.png", true);
+        plugin.saveResource("demo_background.png", true);
+        plugin.saveResource("icons.png", true);
+        plugin.saveResource("options_background.png", true);
+        plugin.saveResource("recipe_book.png", true);
+        plugin.saveResource("recipe_button.png", true);
+        plugin.saveResource("resource_packs.png", true);
+        plugin.saveResource("server_selection.png", true);
+        plugin.saveResource("social_interactions.png", true);
+        plugin.saveResource("stream_indicator.png", true);
+        plugin.saveResource("toasts.png", true);
+        plugin.saveResource("widgets.png", true);
+        plugin.saveResource("world_selection.png", true);
+
+        File accessibility = new File(gui, "accessibility.png");
+        if (!accessibility.exists()) {
+            accessibility.createNewFile();
+        }
+        File bars = new File(gui, "bars.png");
+        if (!bars.exists()) {
+            bars.createNewFile();
+        }
+        File book = new File(gui, "book.png");
+        if (!book.exists()) {
+            book.createNewFile();
+        }
+        File checkbox = new File(gui, "checkbox.png");
+        if (!checkbox.exists()) {
+            checkbox.createNewFile();
+        }
+        File demo_background = new File(gui, "demo_background.png");
+        if (!demo_background.exists()) {
+            demo_background.createNewFile();
+        }
+        File icons = new File(gui, "icons.png");
+        if (!icons.exists()) {
+            icons.createNewFile();
+        }
+        File options_background = new File(gui, "options_background.png");
+        if (!options_background.exists()) {
+            options_background.createNewFile();
+        }
+        File recipe_book = new File(gui, "recipe_book.png");
+        if (!recipe_book.exists()) {
+            recipe_book.createNewFile();
+        }
+        File recipe_button = new File(gui, "recipe_button.png");
+        if (!recipe_button.exists()) {
+            recipe_button.createNewFile();
+        }
+        File resource_packs = new File(gui, "resource_packs.png");
+        if (!resource_packs.exists()) {
+            resource_packs.createNewFile();
+        }
+        File server_selection = new File(gui, "server_selection.png");
+        if (!server_selection.exists()) {
+            server_selection.createNewFile();
+        }
+        File social_interactions = new File(gui, "social_interactions.png");
+        if (!social_interactions.exists()) {
+            social_interactions.createNewFile();
+        }
+        File stream_indicator = new File(gui, "stream_indicator.png");
+        if (!stream_indicator.exists()) {
+            stream_indicator.createNewFile();
+        }
+        File toasts = new File(gui, "toasts.png");
+        if (!toasts.exists()) {
+            toasts.createNewFile();
+        }
+        File widgetsGUI = new File(gui, "widgets.png");
+        if (!widgetsGUI.exists()) {
+            widgetsGUI.createNewFile();
+        }
+        File world_selection = new File(gui, "world_selection.png");
+        if (!world_selection.exists()) {
+            world_selection.createNewFile();
+        }
+
+        File accessibilitySource = new File(dataFolder, "accessibility.png");
+        File barsSource = new File(dataFolder, "bars.png");
+        File bookSource = new File(dataFolder, "book.png");
+        File checkboxSource = new File(dataFolder, "checkbox.png");
+        File demo_backgroundSource = new File(dataFolder, "demo_background.png");
+        File iconsSource = new File(dataFolder, "icons.png");
+        File options_backgroundSource = new File(dataFolder, "options_background.png");
+        File recipe_bookSource = new File(dataFolder, "recipe_book.png");
+        File recipe_buttonSource = new File(dataFolder, "recipe_button.png");
+        File resource_packsSource = new File(dataFolder, "resource_packs.png");
+        File server_selectionSource = new File(dataFolder, "server_selection.png");
+        File social_interactionsSource = new File(dataFolder, "social_interactions.png");
+        File stream_indicatorSource = new File(dataFolder, "stream_indicator.png");
+        File toastsSource = new File(dataFolder, "toasts.png");
+        File widgetsSource = new File(dataFolder, "widgets.png");
+        File world_selectionSource = new File(dataFolder, "world_selection.png");
+
+        Files.copy(accessibilitySource.toPath(), accessibility.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(barsSource.toPath(), bars.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(bookSource.toPath(), book.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(checkboxSource.toPath(), checkbox.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(demo_backgroundSource.toPath(), demo_background.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(iconsSource.toPath(), icons.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(options_backgroundSource.toPath(), options_background.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(recipe_bookSource.toPath(), recipe_book.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(recipe_buttonSource.toPath(), recipe_button.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(resource_packsSource.toPath(), resource_packs.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(server_selectionSource.toPath(), server_selection.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(social_interactionsSource.toPath(), social_interactions.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(stream_indicatorSource.toPath(), stream_indicator.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(toastsSource.toPath(), toasts.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(widgetsSource.toPath(), widgetsGUI.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(world_selectionSource.toPath(), world_selection.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+        accessibilitySource.delete();
+        barsSource.delete();
+        bookSource.delete();
+        checkboxSource.delete();
+        demo_backgroundSource.delete();
+        iconsSource.delete();
+        options_backgroundSource.delete();
+        recipe_bookSource.delete();
+        recipe_buttonSource.delete();
+        resource_packsSource.delete();
+        server_selectionSource.delete();
+        social_interactionsSource.delete();
+        stream_indicatorSource.delete();
+        toastsSource.delete();
+        widgetsSource.delete();
+        world_selectionSource.delete();
+
+        // container
+        plugin.saveResource("container/anvil.png", true);
+        plugin.saveResource("container/beacon.png", true);
+        plugin.saveResource("container/blast_furnace.png", true);
+        plugin.saveResource("container/brewing_stand.png", true);
+        plugin.saveResource("container/bundle.png", true);
+        plugin.saveResource("container/cartography_table.png", true);
+        plugin.saveResource("container/crafting_table.png", true);
+        plugin.saveResource("container/dispenser.png", true);
+        plugin.saveResource("container/enchanting_table.png", true);
+        plugin.saveResource("container/furnace.png", true);
+        plugin.saveResource("container/gamemode_switcher.png", true);
+        plugin.saveResource("container/generic_54.png", true);
+        plugin.saveResource("container/grindstone.png", true);
+        plugin.saveResource("container/hopper.png", true);
+        plugin.saveResource("container/horse.png", true);
+        plugin.saveResource("container/inventory.png", true);
+        plugin.saveResource("container/loom.png", true);
+        plugin.saveResource("container/shulker_box.png", true);
+        plugin.saveResource("container/smithing.png", true);
+        plugin.saveResource("container/smoker.png", true);
+        plugin.saveResource("container/stats_icons.png", true);
+        plugin.saveResource("container/stonecutter.png", true);
+        plugin.saveResource("container/villager2.png", true);
+
+        File anvil = new File(gui, "container/anvil.png");
+        if (!anvil.exists()) {
+            anvil.createNewFile();
+        }
+        File beacon = new File(gui, "container/beacon.png");
+        if (!beacon.exists()) {
+            beacon.createNewFile();
+        }
+        File blast_furnace = new File(gui, "container/blast_furnace.png");
+        if (!blast_furnace.exists()) {
+            blast_furnace.createNewFile();
+        }
+        File brewing_stand = new File(gui, "container/brewing_stand.png");
+        if (!brewing_stand.exists()) {
+            brewing_stand.createNewFile();
+        }
+        File bundle = new File(gui, "container/bundle.png");
+        if (!bundle.exists()) {
+            bundle.createNewFile();
+        }
+        File cartography_table = new File(gui, "container/cartography_table.png");
+        if (!cartography_table.exists()) {
+            cartography_table.createNewFile();
+        }
+        File crafting_table = new File(gui, "container/crafting_table.png");
+        if (!crafting_table.exists()) {
+            crafting_table.createNewFile();
+        }
+        File dispenser = new File(gui, "container/dispenser.png");
+        if (!dispenser.exists()) {
+            dispenser.createNewFile();
+        }
+        File enchanting_table = new File(gui, "container/enchanting_table.png");
+        if (!enchanting_table.exists()) {
+            enchanting_table.createNewFile();
+        }
+        File furnace = new File(gui, "container/furnace.png");
+        if (!furnace.exists()) {
+            furnace.createNewFile();
+        }
+        File gamemode_switcher = new File(gui, "container/gamemode_switcher.png");
+        if (!gamemode_switcher.exists()) {
+            gamemode_switcher.createNewFile();
+        }
+        File generic_54 = new File(gui, "container/generic_54.png");
+        if (!generic_54.exists()) {
+            generic_54.createNewFile();
+        }
+        File grindstone = new File(gui, "container/grindstone.png");
+        if (!grindstone.exists()) {
+            grindstone.createNewFile();
+        }
+        File hopper = new File(gui, "container/hopper.png");
+        if (!hopper.exists()) {
+            hopper.createNewFile();
+        }
+        File horse = new File(gui, "container/horse.png");
+        if (!horse.exists()) {
+            horse.createNewFile();
+        }
+        File inventory = new File(gui, "container/inventory.png");
+        if (!inventory.exists()) {
+            inventory.createNewFile();
+        }
+        File loom = new File(gui, "container/loom.png");
+        if (!loom.exists()) {
+            loom.createNewFile();
+        }
+        File shulker_box = new File(gui, "container/shulker_box.png");
+        if (!shulker_box.exists()) {
+            shulker_box.createNewFile();
+        }
+        File smithing = new File(gui, "container/smithing.png");
+        if (!smithing.exists()) {
+            smithing.createNewFile();
+        }
+        File smoker = new File(gui, "container/smoker.png");
+        if (!smoker.exists()) {
+            smoker.createNewFile();
+        }
+        File stats_icons = new File(gui, "container/stats_icons.png");
+        if (!stats_icons.exists()) {
+            stats_icons.createNewFile();
+        }
+        File stonecutter = new File(gui, "container/stonecutter.png");
+        if (!stonecutter.exists()) {
+            stonecutter.createNewFile();
+        }
+        File villager2 = new File(gui, "container/villager2.png");
+        if (!villager2.exists()) {
+            villager2.createNewFile();
+        }
+
+
+        File anvilSource = new File(dataFolder, "container/anvil.png");
+        File beaconSource = new File(dataFolder, "container/beacon.png");
+        File blast_furnaceSource = new File(dataFolder, "container/blast_furnace.png");
+        File brewing_standSource = new File(dataFolder, "container/brewing_stand.png");
+        File bundleSource = new File(dataFolder, "container/bundle.png");
+        File cartography_tableSource = new File(dataFolder, "container/cartography_table.png");
+        File crafting_tableSource = new File(dataFolder, "container/crafting_table.png");
+        File dispenserSource = new File(dataFolder, "container/dispenser.png");
+        File enchanting_tableSource = new File(dataFolder, "container/enchanting_table.png");
+        File furnaceSource = new File(dataFolder, "container/furnace.png");
+        File gamemode_switcherSource = new File(dataFolder, "container/gamemode_switcher.png");
+        File generic_54Source = new File(dataFolder, "container/generic_54.png");
+        File grindstoneSource = new File(dataFolder, "container/grindstone.png");
+        File hopperSource = new File(dataFolder, "container/hopper.png");
+        File horseSource = new File(dataFolder, "container/horse.png");
+        File inventorySource = new File(dataFolder, "container/inventory.png");
+        File loomSource = new File(dataFolder, "container/loom.png");
+        File shulker_boxSource = new File(dataFolder, "container/shulker_box.png");
+        File smithingSource = new File(dataFolder, "container/smithing.png");
+        File smokerSource = new File(dataFolder, "container/smoker.png");
+        File stats_iconsSource = new File(dataFolder, "container/stats_icons.png");
+        File stonecutterSource = new File(dataFolder, "container/stonecutter.png");
+        File villager2Source = new File(dataFolder, "container/villager2.png");
+
+        Files.copy(anvilSource.toPath(), anvil.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(beaconSource.toPath(), beacon.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(blast_furnaceSource.toPath(), blast_furnace.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(brewing_standSource.toPath(), brewing_stand.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(bundleSource.toPath(), bundle.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(cartography_tableSource.toPath(), cartography_table.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(crafting_tableSource.toPath(), crafting_table.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(dispenserSource.toPath(), dispenser.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(enchanting_tableSource.toPath(), enchanting_table.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(furnaceSource.toPath(), furnace.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(gamemode_switcherSource.toPath(), gamemode_switcher.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(generic_54Source.toPath(), generic_54.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(grindstoneSource.toPath(), grindstone.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(hopperSource.toPath(), hopper.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(horseSource.toPath(), horse.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(inventorySource.toPath(), inventory.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(loomSource.toPath(), loom.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(shulker_boxSource.toPath(), shulker_box.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(smithingSource.toPath(), smithing.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(smokerSource.toPath(), smoker.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(stats_iconsSource.toPath(), stats_icons.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(stonecutterSource.toPath(), stonecutter.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(villager2Source.toPath(), villager2.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+        anvilSource.delete();
+        beaconSource.delete();
+        blast_furnaceSource.delete();
+        brewing_standSource.delete();
+        bundleSource.delete();
+        cartography_tableSource.delete();
+        crafting_tableSource.delete();
+        dispenserSource.delete();
+        enchanting_tableSource.delete();
+        furnaceSource.delete();
+        gamemode_switcherSource.delete();
+        generic_54Source.delete();
+        grindstoneSource.delete();
+        hopperSource.delete();
+        horseSource.delete();
+        inventorySource.delete();
+        loomSource.delete();
+        shulker_boxSource.delete();
+        smithingSource.delete();
+        smokerSource.delete();
+        stats_iconsSource.delete();
+        stonecutterSource.delete();
+        villager2Source.delete();
+
+        // container/creative_inventory
+        plugin.saveResource("container/creative_inventory/tab_inventory.png", true);
+        plugin.saveResource("container/creative_inventory/tab_item_search.png", true);
+        plugin.saveResource("container/creative_inventory/tab_items.png", true);
+        plugin.saveResource("container/creative_inventory/tabs.png", true);
+
+        File tab_inventory = new File(gui, "container/creative_inventory/tab_inventory.png");
+        if (!tab_inventory.exists()) {
+            tab_inventory.createNewFile();
+        }
+        File tab_item_search = new File(gui, "container/creative_inventory/tab_item_search.png");
+        if (!tab_item_search.exists()) {
+            tab_item_search.createNewFile();
+        }
+        File tab_items = new File(gui, "container/creative_inventory/tab_items.png");
+        if (!tab_items.exists()) {
+            tab_items.createNewFile();
+        }
+        File tabs = new File(gui, "container/creative_inventory/tabs.png");
+        if (!tabs.exists()) {
+            tabs.createNewFile();
+        }
+
+        File tab_inventorySource = new File(dataFolder, "container/creative_inventory/tab_inventory.png");
+        File tab_item_searchSource = new File(dataFolder, "container/creative_inventory/tab_item_search.png");
+        File tab_itemsSource = new File(dataFolder, "container/creative_inventory/tab_items.png");
+        File tabsSource = new File(dataFolder, "container/creative_inventory/tabs.png");
+
+        Files.copy(tab_inventorySource.toPath(), tab_inventory.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(tab_item_searchSource.toPath(), tab_item_search.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(tab_itemsSource.toPath(), tab_items.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(tabsSource.toPath(), tabs.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+        tab_inventorySource.delete();
+        tab_item_searchSource.delete();
+        tab_itemsSource.delete();
+        tabsSource.delete();
+
+        // advancements
+        plugin.saveResource("advancements/widgets.png", true);
+        plugin.saveResource("advancements/window.png", true);
+        plugin.saveResource("advancements/tabs.png", true);
+
+        File widgetsAD = new File(gui, "advancements/widgets.png");
+        if (!widgetsAD.exists()) {
+            widgetsAD.createNewFile();
+        }
+        File window = new File(gui, "advancements/window.png");
+        if (!window.exists()) {
+            window.createNewFile();
+        }
+        File tabsAD = new File(gui, "advancements/tabs.png");
+        if (!tabsAD.exists()) {
+            tabsAD.createNewFile();
+        }
+
+        File widgetsADSource = new File(dataFolder, "advancements/widgets.png");
+        File windowSource = new File(dataFolder, "advancements/window.png");
+        File tabsADSource = new File(dataFolder, "advancements/tabs.png");
+
+        Files.copy(widgetsADSource.toPath(), widgetsAD.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(windowSource.toPath(), window.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(tabsADSource.toPath(), tabsAD.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+        widgetsADSource.delete();
+        windowSource.delete();
+        tabsADSource.delete();
+
+        // advancements/backgrounds
+        plugin.saveResource("advancements/backgrounds/adventure.png", true);
+        plugin.saveResource("advancements/backgrounds/end.png", true);
+        plugin.saveResource("advancements/backgrounds/husbandry.png", true);
+        plugin.saveResource("advancements/backgrounds/nether.png", true);
+        plugin.saveResource("advancements/backgrounds/stone.png", true);
+
+        File adventure = new File(gui, "advancements/backgrounds/adventure.png");
+        if (!adventure.exists()) {
+            adventure.createNewFile();
+        }
+        File end = new File(gui, "advancements/backgrounds/end.png");
+        if (!end.exists()) {
+            end.createNewFile();
+        }
+        File husbandry = new File(gui, "advancements/backgrounds/husbandry.png");
+        if (!husbandry.exists()) {
+            husbandry.createNewFile();
+        }
+        File nether = new File(gui, "advancements/backgrounds/nether.png");
+        if (!nether.exists()) {
+            nether.createNewFile();
+        }
+        File stone = new File(gui, "advancements/backgrounds/stone.png");
+        if (!stone.exists()) {
+            stone.createNewFile();
+        }
+
+        File adventureSource = new File(dataFolder, "advancements/backgrounds/adventure.png");
+        File endSource = new File(dataFolder, "advancements/backgrounds/end.png");
+        File husbandrySource = new File(dataFolder, "advancements/backgrounds/husbandry.png");
+        File netherSource = new File(dataFolder, "advancements/backgrounds/nether.png");
+        File stoneSource = new File(dataFolder, "advancements/backgrounds/stone.png");
+
+        Files.copy(adventureSource.toPath(), adventure.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(endSource.toPath(), end.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(husbandrySource.toPath(), husbandry.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(netherSource.toPath(), nether.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(stoneSource.toPath(), stone.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+        adventureSource.delete();
+        endSource.delete();
+        husbandrySource.delete();
+        netherSource.delete();
+        stoneSource.delete();
+    }
+
 
     public void generateResourcePack() {
         String packName = "MyResourcePack";
@@ -137,6 +585,8 @@ public class PackHelper {
 
         // Create the resource pack folder structure
         try {
+
+            loadGUI(new File(dataFolder, "pack/assets/minecraft/textures/gui"));
 
             // Copy items images to textures/item folder and create .mcmeta files
             copyItems(new File(dataFolder, "items"),
@@ -191,6 +641,13 @@ public class PackHelper {
                     new File(dataFolder, "pack/assets/minecraft/models/block"),
                     new File(dataFolder, "pack/assets/minecraft/blockstates"));
 
+            // Hats
+            copyHats(new File(dataFolder, "hats"),
+                    new File(dataFolder, "pack/assets/minecraft/textures/block"),
+                    new File(dataFolder, "pack/assets/minecraft/models/block"),
+                    new File(dataFolder, "pack/assets/minecraft/models/item"),
+                    new File(dataFolder, "pack/assets/minecraft/textures/misc"));
+
             // Generate pack.mcmeta file
             generatePackMcMeta(new File(dataFolder, "pack"));
 
@@ -203,6 +660,179 @@ public class PackHelper {
             sendResourcePackToPlayers(dataFolder, packName);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+
+    public void copyHats(File sourceFolder, File textureFolder, File modelsFolder, File carvedPumpkinFolder, File miscCarvePumpkinTextureFolder) throws IOException {
+        if (!sourceFolder.exists()) {
+            if (sourceFolder.mkdirs()) {
+                plugin.getLogger().info("Made a folder " + sourceFolder.getName());
+            } else {
+                plugin.getLogger().info("Can't create the folder " + sourceFolder.getName());
+            }
+        }
+
+        if (!textureFolder.exists()) {
+            if (textureFolder.mkdirs()) {
+                plugin.getLogger().info("Made a folder " + textureFolder.getName());
+            } else {
+                plugin.getLogger().info("Can't create the folder " + textureFolder.getName());
+            }
+        }
+
+        if (!modelsFolder.exists()) {
+            if (modelsFolder.mkdirs()) {
+                plugin.getLogger().info("Made a folder " + modelsFolder.getName());
+            } else {
+                plugin.getLogger().info("Can't create the folder " + modelsFolder.getName());
+            }
+        }
+
+        if (!carvedPumpkinFolder.exists()) {
+            if (carvedPumpkinFolder.mkdirs()) {
+                plugin.getLogger().info("Made a folder " + carvedPumpkinFolder.getName());
+            } else {
+                plugin.getLogger().info("Can't create the folder " + carvedPumpkinFolder.getName());
+            }
+        }
+
+        if (!miscCarvePumpkinTextureFolder.exists()) {
+            if (miscCarvePumpkinTextureFolder.mkdirs()) {
+                plugin.getLogger().info("Made a folder " + miscCarvePumpkinTextureFolder.getName());
+            } else {
+                plugin.getLogger().info("Can't create the folder " + miscCarvePumpkinTextureFolder.getName());
+            }
+        }
+
+        File[] files = sourceFolder.listFiles();
+        if (files == null) { return; }
+        for (String filePath : plugin.config.getHats()) {
+
+            File SourceHatTexture = new File(sourceFolder, filePath+".png");
+            String model = plugin.config.getItemModel(filePath);
+            File SourceHatModel = new File(sourceFolder, model +".json");
+
+            if (!SourceHatTexture.exists() && !SourceHatModel.exists()) { return; }
+
+            String textureHarDir = getDirByFilePath(filePath).toString();
+            String modelHarDir = getDirByFilePath(model).toString();
+
+            File TextureHatFolder = new File(textureFolder, textureHarDir);
+            File ModelHatFolder = new File(modelsFolder, modelHarDir);
+
+            if (!TextureHatFolder.exists()) {
+                if (TextureHatFolder.mkdirs()) {
+                    plugin.getLogger().info("Made a folder "+TextureHatFolder.getName());
+                } else {
+                    plugin.getLogger().info("Can't make a folder "+TextureHatFolder.getName());
+                }
+            }
+
+            if (!ModelHatFolder.exists()) {
+                if (ModelHatFolder.mkdirs()) {
+                    plugin.getLogger().info("Made a folder "+ModelHatFolder.getName());
+                } else {
+                    plugin.getLogger().info("Can't make a folder "+ModelHatFolder.getName());
+                }
+            }
+
+            File TextureHatFile = new File(textureFolder, filePath+".png");
+            File ModelHatFile = new File(modelsFolder, model+".json");
+
+            if (!TextureHatFile.exists()) {
+                if (TextureHatFile.createNewFile()) {
+                    plugin.getLogger().info("Made a file "+TextureHatFile.getName());
+                } else {
+                    plugin.getLogger().info("Can't make a file "+TextureHatFile.getName());
+                }
+            }
+
+            if (!ModelHatFile.exists()) {
+                if (ModelHatFile.createNewFile()) {
+                    plugin.getLogger().info("Made a file "+ModelHatFile.getName());
+                } else {
+                    plugin.getLogger().info("Can't make a file "+ModelHatFile.getName());
+                }
+            }
+
+            Files.copy(SourceHatTexture.toPath(), TextureHatFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(SourceHatModel.toPath(), ModelHatFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+            String carvedPumpkinTextures = plugin.config.getHatPumpkinTexture(filePath);
+            String carvedPumpkinTexturesFolder = getDirByFilePath(carvedPumpkinTextures).toString();
+
+            File SourceCarvedPumpkinTextureFile = new File(sourceFolder, carvedPumpkinTextures+".png");
+            if (SourceCarvedPumpkinTextureFile.exists()) {
+                File TextureCarvedPumpkinFolder = new File(miscCarvePumpkinTextureFolder, carvedPumpkinTexturesFolder);
+                if (!TextureCarvedPumpkinFolder.exists()) {
+                    if (TextureCarvedPumpkinFolder.mkdirs()) {
+                        plugin.getLogger().info("Made a folder "+ TextureCarvedPumpkinFolder.getName());
+                    } else {
+                        plugin.getLogger().info("Can't make a folder "+ TextureCarvedPumpkinFolder.getName());
+                    }
+                }
+
+                File TextureCarvedPumpkinFile = new File(miscCarvePumpkinTextureFolder, carvedPumpkinTextures+".png");
+                if (!TextureCarvedPumpkinFile.exists()) {
+                    if (TextureCarvedPumpkinFile.createNewFile()) {
+                        plugin.getLogger().info("Made a file "+ TextureCarvedPumpkinFile.getName());
+                    } else {
+                        plugin.getLogger().info("Can't make a file "+ TextureCarvedPumpkinFile.getName());
+                    }
+                }
+
+                Files.copy(SourceCarvedPumpkinTextureFile.toPath(), TextureCarvedPumpkinFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+            } else {
+                plugin.saveResource("pumpkinblur.png", true);
+                File pumpkinBlur = new File(plugin.getDataFolder(), "pumpkinblur.png");
+                File TextureCarvedPumpkinFile2 = new File(miscCarvePumpkinTextureFolder, "pumpkinblur.png");
+                if (!TextureCarvedPumpkinFile2.exists()) {
+                    if (TextureCarvedPumpkinFile2.createNewFile()) {
+                        plugin.getLogger().info("Made a file "+ TextureCarvedPumpkinFile2.getName());
+                    } else {
+                        plugin.getLogger().info("Can't make a file "+ TextureCarvedPumpkinFile2.getName());
+                    }
+                }
+
+                Files.copy(pumpkinBlur.toPath(), TextureCarvedPumpkinFile2.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+                if (pumpkinBlur.exists()) {
+                    if (pumpkinBlur.delete()) {
+                        plugin.getLogger().info("Deleted pumpkinblur.png");
+                    } else {
+                        plugin.getLogger().info("Can't delete pumpkinblur.png");
+                    }
+                }
+            }
+
+            File ModelCarvedPumpkin = new File(carvedPumpkinFolder, "carved_pumpkin.json");
+            if (!ModelCarvedPumpkin.exists()) {
+                if (ModelCarvedPumpkin.createNewFile()) {
+                    plugin.getLogger().info("Made a file "+ ModelCarvedPumpkin.getName());
+                } else {
+                    plugin.getLogger().info("Can't make a file "+ ModelCarvedPumpkin.getName());
+                }
+            }
+
+            JsonObject blockJson = new JsonObject();
+            blockJson.addProperty("parent", "item/handheld");
+
+            JsonObject texturesJson = new JsonObject();
+            texturesJson.addProperty("layer0", "block/carved_pumpkin");
+            blockJson.add("textures", texturesJson);
+
+            JsonArray overridesJson = new JsonArray();
+            JsonObject overrideJson = new JsonObject();
+            JsonObject predicateJson = new JsonObject();
+            predicateJson.addProperty("custom_model_data", plugin.config.getItemModelData(filePath));
+            overrideJson.add("predicate", predicateJson);
+            overrideJson.addProperty("model", "block/"+model);
+            overridesJson.add(overrideJson);
+
+            blockJson.add("overrides", overridesJson);
+            addJsonToFile(ModelCarvedPumpkin, blockJson);
         }
     }
 
@@ -494,78 +1124,6 @@ public class PackHelper {
                 textuers.addProperty("particle", "minecraft:block/"+blockPart);
                 block.add("textures", textuers);
                 addJsonToFile(ModelBlockFileCreate, block);
-                /*
-                JsonArray elements = new JsonArray();
-                JsonObject element = new JsonObject();
-                JsonArray b = new JsonArray();
-                b.add(0);
-                b.add(0);
-                b.add(0);
-                element.add("from", b);
-                JsonArray b1 = new JsonArray();
-                b1.add(16);
-                b1.add(16);
-                b1.add(16);
-                element.add("to", b1);
-
-                JsonObject faces = new JsonObject();
-                JsonObject downFace = new JsonObject();
-                JsonArray uvArray = new JsonArray();
-                uvArray.add(0);
-                uvArray.add(0);
-                uvArray.add(16);
-                uvArray.add(16);
-                downFace.add("uv", uvArray);
-                downFace.addProperty("texture", "#top");
-                downFace.addProperty("cullface", "down");
-                faces.add("down", downFace);
-
-                JsonObject upFace = new JsonObject();
-                JsonArray a = new JsonArray();
-                a.add(0);
-                a.add(16);
-                a.add(16);
-                a.add(0);
-                downFace.add("uv", a);
-                upFace.addProperty("texture", "#top");
-                upFace.addProperty("cullface", "up");
-                faces.add("up", upFace);
-
-                JsonObject northFace = new JsonObject();
-                JsonArray b2 = new JsonArray();
-                b2.add(0);
-                b2.add(0);
-                b2.add(16);
-                b2.add(16);
-                northFace.add("uv", b2);
-                northFace.addProperty("texture", "#front");
-                northFace.addProperty("cullface", "north");
-                faces.add("north", northFace);
-
-                JsonObject southFace = new JsonObject();
-                southFace.add("uv", b2);
-                southFace.addProperty("texture", "#bottom");
-                southFace.addProperty("cullface", "south");
-                faces.add("south", southFace);
-
-                JsonObject westFace = new JsonObject();
-                westFace.add("uv", b2);
-                westFace.addProperty("texture", "#side");
-                westFace.addProperty("cullface", "west");
-                faces.add("west", westFace);
-
-                JsonObject eastFace = new JsonObject();
-                eastFace.add("uv", b2);
-                eastFace.addProperty("texture", "#side");
-                eastFace.addProperty("cullface", "east");
-                faces.add("east", eastFace);
-
-                element.add("faces", faces);
-                elements.add(element);
-
-                block.add("elements", elements);
-                addJsonToFile(ModelBlockFileCreate, block);
-                 */
             }
 
             if (!BlockStates.exists()) {

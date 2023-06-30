@@ -72,7 +72,7 @@ public final class JustItems extends JavaPlugin {
             // TODO Main Tab Complete
             // TODO Commands
             // TODO Finish Help Menu
-            // TODO Hats, Wings, Liquids, Mobs, HUI/HUD, GUI
+            // TODO Hats, Wings, Liquids, Mobs, HUD, Emotes, Widgets, Weapons, Cars
 
 
             config = new MainConfig(this);

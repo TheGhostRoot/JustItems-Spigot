@@ -11,7 +11,8 @@ messages:
   - "&cFailed &4<error>" # <error> -> the error message
 
 
-# Use only "/" for folders
+# Use only "/" for folders. If you want to change the bars or the Widgets or anything else. You can go to pack/assets/minecraft/textures/gui
+# and change it there. The plugin will only create the folders and the .png files if they were deleted or didn't exist
 
 pack:
   format: 7  # https://minecraft.fandom.com/wiki/Pack_format
@@ -80,7 +81,7 @@ pack:
         time: 10
       2:
         time: 5
-  emojis:
+  emojis: # You can use emojis for custom: GUI | Emoji | Ranks | Tags
     - "emoji1"
     - "emoji2"
   emoji1: # to test it use /tellraw @a {"text": "\uE001"}
@@ -97,9 +98,9 @@ pack:
       2:
         time: 5
   emoji2:
-    chars:
-    - "\uE002" # only one emoji per char. You can add rank tags with emojis.
-    type: "bitmap"
+    chars:  # assets/minecraft/font/default.json  -> look for chars and change it there. If you see "?" in chars just change it
+    - "\uE002" # only one emoji per char. You can add rank tags with emojis. If the emoji doesn't work then you can go to
+    type: "bitmap" # the type of the .png file
     height: 10
     ascent: 9
     animation:
@@ -113,8 +114,10 @@ pack:
     - "hat1"
     - "hat2"
   hat1:
-    remove_pumpkin: true
-    item_model: "hat1"
+    remove_pumpkin: true  # if you DON'T want to see the blur pumpkin texture when you put your hat on.
+    item_model: "hat1" # the model for the hat .json format.
+    hat_pumpkin_texture: "hat_pumpkin" # If you want to change the overlay on the player's screen when a player puts on the hat.
+    model_data: 1 # the model data for the hat
     animation:
       enable: true
       amount_of_frames: 2
@@ -125,6 +128,8 @@ pack:
   hat2:
     remove_pumpkin: true
     item_model: "hat2"
+    hat_pumpkin_model: "hat_pumpkin"
+    model_data: 1
     animation:
       enable: true
       amount_of_frames: 2
@@ -132,3 +137,4 @@ pack:
         time: 10
       2:
         time: 5
+

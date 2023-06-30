@@ -195,6 +195,20 @@ public class MainConfig {
         }
     }
 
+    public List<String> getHats() {
+        List<String> got = (List<String>) configData.getList("pack.hats");
+        if (got == null) {
+            List<String> array = new ArrayList<>();
+            array.add("hat1");
+            array.add("hat2");
+            configData.set("pack.hats", array);
+            reloadConfig();
+            return new ArrayList<>();
+        } else {
+            return got;
+        }
+    }
+
     public String getItemType(String item) {
         String got = configData.getString("pack."+item+".type");
         if (got == null) {
@@ -278,6 +292,17 @@ public class MainConfig {
             configData.set("pack."+block+".sides.particle", "blockParticle");
             reloadConfig();
             return "blockParticle";
+        } else {
+            return got;
+        }
+    }
+
+    public String getHatPumpkinTexture(String hat) {
+        String got = configData.getString("pack."+hat+".hat_pumpkin_texture");
+        if (got == null) {
+            configData.set("pack."+hat+".hat_pumpkin_texture", "hat_pumpkin");
+            reloadConfig();
+            return "hat_pumpkin";
         } else {
             return got;
         }
