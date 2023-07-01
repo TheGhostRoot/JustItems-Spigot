@@ -16,6 +16,8 @@ messages:
 
 
 # ---------------------------------------------------
+#  Only tested the pack for 1.17.1 , but it should work for earlier and later minecraft versions.
+# If not you can tell me to fix it on my discord server.
 #  WARNING!!! The default HUD will be generated after you generate the pack.
 #
 #  If you provide your own .json model make sure that the texture paths are correct with the folder that you putted them.
@@ -35,6 +37,7 @@ messages:
 # REMEMBER! All textures should be in lower case. This plugin won't convert it to lower case since it can brake something.
 # ---------------------------------------------------
 pack:
+  name: "My pack"
   format: 7  # https://minecraft.fandom.com/wiki/Pack_format
   description: "Your own pack"
   blocks: # The blocks that will be used for textures ( Don't put .png or .mcmeta or .json ) Just the name

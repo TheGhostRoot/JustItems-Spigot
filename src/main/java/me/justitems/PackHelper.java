@@ -587,7 +587,7 @@ public class PackHelper {
 
 
     public void generateResourcePack() {
-        String packName = "MyResourcePack";
+        String packName = plugin.config.getPackName();
         File dataFolder = plugin.getDataFolder();
         File resourcePackFolder = new File(dataFolder, packName);
 
@@ -676,8 +676,6 @@ public class PackHelper {
             // Zip the resource pack folder
             zipResourcePack(resourcePackFolder, new File(dataFolder, packName + ".zip"));
 
-            // Provide the resource pack file to all players on the server
-            sendResourcePackToPlayers(dataFolder, packName);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -1372,6 +1370,13 @@ public class PackHelper {
                         plugin.getLogger().info("Can't make a folder " + destinationFile.getName());
                     }
                 } else {
+                    if (!destinationFile.exists()) {
+                        if (destinationFile.createNewFile()) {
+                            plugin.getLogger().info("Made a file " + destinationFile.getName());
+                        } else {
+                            plugin.getLogger().info("Can't make a file " + destinationFile.getName());
+                        }
+                    }
                     Files.copy(file.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 }
             }
@@ -1658,16 +1663,6 @@ public class PackHelper {
         }
     }
 
-
-    public void sendResourcePackToPlayers(File data, String name) throws IOException {
-        File resourcePackFile = new File(data, name + ".zip");
-        String resourcePackUrl = resourcePackFile.toURI().toString();
-        byte[] resourcePackHash = calculateSHA1(resourcePackFile);
-
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            player.setResourcePack(resourcePackUrl, resourcePackHash);
-        }
-    }
 
     public byte[] calculateSHA1(File file) throws IOException {
         MessageDigest digest;

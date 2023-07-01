@@ -16,13 +16,26 @@ messages:
 
 
 # ---------------------------------------------------
-#  WARNING!!! The HUD will be generated after you generate the pack.
-# When the pack is being generated all the HUD will be replaced with the default one.
-# So generate the pack the first time. Copy over the default HUD images to anywhere except the pack folder.
-# When you are done with the HUD textures DON'T put them back if you are not done with the pack.
-# Once you sure the pack is ready then you can copy them over to the assets/minecraft/textures/gui  after the generation.
+#  WARNING!!! The default HUD will be generated after you generate the pack.
+#
+#  If you provide your own .json model make sure that the texture paths are correct with the folder that you putted them.
+#  The plugin won't check if the texture paths are correct if you give a custom .json model
+#
+# Environments, Maps and HUD doesn't support folders so "my_environments/new_sun" won't be supported!
+#
+# For the hats -> The textures will be stored in block textures and the models in block models
+#
+# Please ignore the folders "container" ; "container/creative_inventory" ; "advancements" ; "advancements/backgrounds"
+# those are for generating the HUD
+#
+# If you need help or support. Join my discord server: https://discord.gg/tHUZtECbB5
+#
+# The Blocks, Armors, Environments, Maps and HUD will replace the vanilla textures. ONLY blocks can have models
+#
+# REMEMBER! All textures should be in lower case. This plugin won't convert it to lower case since it can brake something.
 # ---------------------------------------------------
 pack:
+  name: "My pack"
   format: 7  # https://minecraft.fandom.com/wiki/Pack_format
   description: "Your own pack"
   blocks: # The blocks that will be used for textures ( Don't put .png or .mcmeta or .json ) Just the name
@@ -138,6 +151,67 @@ pack:
     item_model: "hat2"
     hat_pumpkin_model: "hat_pumpkin"
     model_data: 1
+    animation:
+      enable: true
+      amount_of_frames: 2
+      1:
+        time: 10
+      2:
+        time: 5
+  armors:
+    - "armor1"
+    - "armor2"
+  armor1:
+    type: "iron_layer_1"
+    model_data: 1
+    animation:
+      enable: true
+      amount_of_frames: 2
+      1:
+        time: 10
+      2:
+        time: 5
+  armor2:
+    type: "diamond_layer_2"
+    model_data: 1
+    animation:
+      enable: true
+      amount_of_frames: 2
+      1:
+        time: 10
+      2:
+        time: 5
+  environments: # you can only set: sun ; snow ; rain ; moon_phases ; end_sky ; clouds
+    - "sun"
+    - "snow"
+  sun:
+    animation:
+      enable: true
+      amount_of_frames: 2
+      1:
+        time: 10
+      2:
+        time: 5
+  snow:
+    animation:
+      enable: true
+      amount_of_frames: 2
+      1:
+        time: 10
+      2:
+        time: 5
+  maps: # you can only set: map_icons ; map_background ; map_background_checkerboard
+    - "map_icons"
+    - "map_background"
+  map_icons:
+    animation:
+      enable: true
+      amount_of_frames: 2
+      1:
+        time: 10
+      2:
+        time: 5
+  map_background:
     animation:
       enable: true
       amount_of_frames: 2

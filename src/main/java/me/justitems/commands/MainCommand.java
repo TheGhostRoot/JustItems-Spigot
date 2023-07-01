@@ -22,8 +22,6 @@ public class MainCommand implements CommandExecutor {
         // only player commands: SetTextures
         if (sender instanceof ConsoleCommandSender) {
 
-            plugin.packHelper.generateResourcePack();
-
             // on /justitems
             if (args.length == 0) {
                 // help menu
@@ -41,7 +39,12 @@ public class MainCommand implements CommandExecutor {
                 case "reload": {
                     // reload the config
                     plugin.config.loadConfig();
-                    plugin.getLogger().info("§2Just Items §6| §аConfig reloaded!");
+                    plugin.getLogger().info("Just Items | Config reloaded!");
+                    break;
+                }
+                case "gen": {
+                    plugin.packHelper.generateResourcePack();
+                    plugin.getLogger().info("Just Items | Generated Pack!");
                     break;
                 }
                 default: {
@@ -87,6 +90,11 @@ public class MainCommand implements CommandExecutor {
                     // reload the config
                     plugin.config.loadConfig();
                     player.sendMessage("§2Just Items §6| §аConfig reloaded!");
+                    break;
+                }
+                case "gen": {
+                    plugin.packHelper.generateResourcePack();
+                    player.sendMessage("§2Just Items §6| §аGenerated Pack!");
                     break;
                 }
                 default: {

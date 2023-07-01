@@ -162,6 +162,17 @@ public class MainConfig {
         }
     }
 
+    public String getPackName() {
+        String got = configData.getString("pack.name");
+        if (got == null) {
+            configData.set("pack.name", "My Pack");
+            reloadConfig();
+            return "My Pack";
+        } else {
+            return got;
+        }
+    }
+
     public int getEmojiHeight(String emoji) {
         return configData.getInt("pack."+emoji+".height");
     }
