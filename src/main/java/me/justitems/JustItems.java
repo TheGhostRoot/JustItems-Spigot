@@ -66,13 +66,11 @@ public final class JustItems extends JavaPlugin {
             Bukkit.getPluginManager().disablePlugin(this);
         } else {
 
-            // TODO config
-            // TODO custom resouce pack
             // TODO Main Command
             // TODO Main Tab Complete
             // TODO Commands
             // TODO Finish Help Menu
-            // TODO Hats, Wings, Liquids, Mobs, Emotes, Tails, Amulets, Music, Songs |   Weapons, Cars
+            // TODO Mobs, Music |   Weapons, Cars, Talismats, Amulets ( AKA cusotom mobs and items in the config )
 
 
             config = new MainConfig(this);

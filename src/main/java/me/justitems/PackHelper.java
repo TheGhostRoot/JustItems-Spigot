@@ -113,15 +113,23 @@ public class PackHelper {
         pack.add("pack/assets/minecraft/blockstates");
         pack.add("pack/assets/minecraft/textures/block");
         pack.add("pack/assets/minecraft/models/block");
+        pack.add("pack/assets/minecraft/models/armor");
+        pack.add("pack/assets/minecraft/textures/models");
+        pack.add("pack/assets/minecraft/textures/models/armor");
         pack.add("pack/assets/minecraft/textures/misc");
+        pack.add("pack/assets/minecraft/textures/map");
+        pack.add("pack/assets/minecraft/textures/environment");
         pack.add("pack/assets/minecraft/textures/gui");
         pack.add("pack/assets/minecraft/textures/gui/advancements");
         pack.add("pack/assets/minecraft/textures/gui/advancements/backgrounds");
         pack.add("pack/assets/minecraft/textures/gui/container");
         pack.add("pack/assets/minecraft/textures/gui/container/creative_inventory");
         pack.add("items");
+        pack.add("maps");
+        pack.add("environments");
         pack.add("emojis");
         pack.add("blocks");
+        pack.add("armors");
         pack.add("hats");
         for (String folder : pack) {
             File f = new File(dataFolder, folder);
@@ -648,6 +656,18 @@ public class PackHelper {
                     new File(dataFolder, "pack/assets/minecraft/models/item"),
                     new File(dataFolder, "pack/assets/minecraft/textures/misc"));
 
+            // Armor
+            copyArmor(new File(dataFolder, "armors"),
+                    new File(dataFolder, "pack/assets/minecraft/textures/models/armor"));
+
+            // Env
+            copyEnv(new File(dataFolder, "environments"),
+                    new File(dataFolder, "pack/assets/minecraft/textures/environment"));
+
+            // Map
+            copyEnv(new File(dataFolder, "maps"),
+                    new File(dataFolder, "pack/assets/minecraft/textures/map"));
+
             // Generate pack.mcmeta file
             generatePackMcMeta(new File(dataFolder, "pack"));
 
@@ -660,6 +680,98 @@ public class PackHelper {
             sendResourcePackToPlayers(dataFolder, packName);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+
+
+    public void copyEnv(File sourceFolder, File textureFolder) throws IOException {
+        if (!sourceFolder.exists()) {
+            if (sourceFolder.mkdirs()) {
+                plugin.getLogger().info("Made a folder " + sourceFolder.getName());
+            } else {
+                plugin.getLogger().info("Can't create the folder " + sourceFolder.getName());
+            }
+        }
+
+        if (!textureFolder.exists()) {
+            if (textureFolder.mkdirs()) {
+                plugin.getLogger().info("Made a folder " + textureFolder.getName());
+            } else {
+                plugin.getLogger().info("Can't create the folder " + textureFolder.getName());
+            }
+        }
+
+        File[] files = sourceFolder.listFiles();
+        if (files == null) { return; }
+
+        for (String filePath : plugin.config.getEnv()) {
+
+            File SourceTexture = new File(sourceFolder, filePath+".png");
+            if (!SourceTexture.exists()) { return; }
+
+            File TextureEnv = new File(textureFolder, filePath+".png");
+            if (!TextureEnv.exists()) {
+                if (TextureEnv.createNewFile()) {
+                    plugin.getLogger().info("Made a file " + TextureEnv.getName());
+                } else {
+                    plugin.getLogger().info("Can't make a file " + TextureEnv.getName());
+                }
+            }
+
+            Files.copy(SourceTexture.toPath(), TextureEnv.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        }
+    }
+
+    public void copyArmor(File sourceFolder, File textureFolder) throws IOException {
+        if (!sourceFolder.exists()) {
+            if (sourceFolder.mkdirs()) {
+                plugin.getLogger().info("Made a folder " + sourceFolder.getName());
+            } else {
+                plugin.getLogger().info("Can't create the folder " + sourceFolder.getName());
+            }
+        }
+
+        if (!textureFolder.exists()) {
+            if (textureFolder.mkdirs()) {
+                plugin.getLogger().info("Made a folder " + textureFolder.getName());
+            } else {
+                plugin.getLogger().info("Can't create the folder " + textureFolder.getName());
+            }
+        }
+
+        File[] files = sourceFolder.listFiles();
+        if (files == null) { return; }
+
+        for (String filePath : plugin.config.getArmors()) {
+
+            File SourceTexture = new File(sourceFolder, filePath+".png");
+            if (!SourceTexture.exists()) { return; }
+
+            String SourceTextureDir = getDirByFilePath(filePath).toString();
+            File TextureFolder = new File(textureFolder, SourceTextureDir);
+            if (!TextureFolder.exists()) {
+                if (TextureFolder.mkdirs()) {
+                    plugin.getLogger().info("Made a folder " + TextureFolder.getName());
+                } else {
+                    plugin.getLogger().info("Can't make a folder " + TextureFolder.getName());
+                }
+            }
+
+            File TextureFile = new File(textureFolder, filePath+".png");
+            if (!TextureFile.exists()) {
+                if (TextureFile.createNewFile()) {
+                    plugin.getLogger().info("Made a file " + TextureFile.getName());
+                } else {
+                    plugin.getLogger().info("Can't make a file " + TextureFile.getName());
+                }
+            }
+
+            Files.copy(SourceTexture.toPath(), TextureFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+            if (plugin.config.isItemAnimationEnabled(filePath)) {
+                generateMcmetaAnimation(TextureFolder, filePath);
+            }
         }
     }
 
@@ -807,6 +919,10 @@ public class PackHelper {
                 }
             }
 
+            if (plugin.config.isItemAnimationEnabled(filePath)) {
+                generateMcmetaAnimation(TextureHatFolder, filePath);
+            }
+
             File ModelCarvedPumpkin = new File(carvedPumpkinFolder, "carved_pumpkin.json");
             if (!ModelCarvedPumpkin.exists()) {
                 if (ModelCarvedPumpkin.createNewFile()) {
@@ -817,7 +933,7 @@ public class PackHelper {
             }
 
             JsonObject blockJson = new JsonObject();
-            blockJson.addProperty("parent", "item/handheld");
+            blockJson.addProperty("parent", "block/carved_pumpkin");
 
             JsonObject texturesJson = new JsonObject();
             texturesJson.addProperty("layer0", "block/carved_pumpkin");

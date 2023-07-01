@@ -1,20 +1,12 @@
 package me.justitems.commands;
 
 import me.justitems.JustItems;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
-import java.security.DigestInputStream;
-import java.security.MessageDigest;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 public class MainConfig {
 
@@ -209,6 +201,49 @@ public class MainConfig {
         }
     }
 
+    public List<String> getArmors() {
+        List<String> got = (List<String>) configData.getList("pack.armors");
+        if (got == null) {
+            List<String> array = new ArrayList<>();
+            array.add("armor1");
+            array.add("armor2");
+            configData.set("pack.armors", array);
+            reloadConfig();
+            return new ArrayList<>();
+        } else {
+            return got;
+        }
+    }
+
+    public List<String> getEnv() {
+        List<String> got = (List<String>) configData.getList("pack.environments");
+        if (got == null) {
+            List<String> array = new ArrayList<>();
+            array.add("sun");
+            array.add("snow");
+            configData.set("pack.environments", array);
+            reloadConfig();
+            return new ArrayList<>();
+        } else {
+            return got;
+        }
+    }
+
+
+    public List<String> getMaps() {
+        List<String> got = (List<String>) configData.getList("pack.maps");
+        if (got == null) {
+            List<String> array = new ArrayList<>();
+            array.add("map_icons");
+            array.add("map_background");
+            configData.set("pack.maps", array);
+            reloadConfig();
+            return new ArrayList<>();
+        } else {
+            return got;
+        }
+    }
+
     public String getItemType(String item) {
         String got = configData.getString("pack."+item+".type");
         if (got == null) {
@@ -320,7 +355,6 @@ public class MainConfig {
         return configData.getInt("pack."+item+".animation."+frame+".time");
     }
 
-
     public String getItemModel(String item) {
         String got = configData.getString("pack."+item+".item_model");
         if (got == null) {
@@ -331,8 +365,6 @@ public class MainConfig {
             return got;
         }
     }
-
-
 
     public void reloadConfig() {
         saveConfig();
