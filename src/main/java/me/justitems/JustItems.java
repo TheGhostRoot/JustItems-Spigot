@@ -68,8 +68,7 @@ public final class JustItems extends JavaPlugin {
 
             // TODO Add customization for items with specific name and/or custom model data
             // TODO this is only vanilla custom resource pack generator and some customizations as well
-            // TODO Mobs, Music |  Weapons, Cars, Talismats, Amulets ( AKA cusotom mobs and items in the config )
-
+            // TODO Weapons, Cars, Talismats, Amulets ( AKA cusotom mobs and items in the config )
 
             config = new MainConfig(this);
             packHelper = new PackHelper(this);

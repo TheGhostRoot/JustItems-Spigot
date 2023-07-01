@@ -25,6 +25,9 @@ messages:
 #
 # Environments, Maps and HUD doesn't support folders so "my_environments/new_sun" won't be supported!
 #
+# You can add your own sounds in pack/assets/minecraft/sounds ...  by default there are item/  ;  block/  random/
+# There are TOO MANY sounds so I can add them in the config
+#
 # For the hats -> The textures will be stored in block textures and the models in block models
 #
 # Please ignore the folders "container" ; "container/creative_inventory" ; "advancements" ; "advancements/backgrounds"
@@ -221,4 +224,24 @@ pack:
         time: 10
       2:
         time: 5
-
+  mobs:  # the mob type is the folder location and the name of the mob in "mobs" is the name of the file in that location
+    - "red_mooshroom"
+    - "brown_mooshroom"
+  red_mooshroom:
+    type: "cow" # the mob category / type
+    animation:
+      enable: true
+      amount_of_frames: 2
+      1:
+        time: 10
+      2:
+        time: 5
+  brown_mooshroom:
+    type: "cow"
+    animation:
+      enable: true
+      amount_of_frames: 2
+      1:
+        time: 10
+      2:
+        time: 5

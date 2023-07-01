@@ -16,12 +16,17 @@ messages:
 
 
 # ---------------------------------------------------
+#  Only tested the pack for 1.17.1 , but it should work for earlier and later minecraft versions.
+# If not you can tell me to fix it on my discord server.
 #  WARNING!!! The default HUD will be generated after you generate the pack.
 #
 #  If you provide your own .json model make sure that the texture paths are correct with the folder that you putted them.
 #  The plugin won't check if the texture paths are correct if you give a custom .json model
 #
 # Environments, Maps and HUD doesn't support folders so "my_environments/new_sun" won't be supported!
+#
+# You can add your own sounds in pack/assets/minecraft/sounds ...  by default there are item/  ;  block/  random/
+# There are TOO MANY sounds so I can add them in the config
 #
 # For the hats -> The textures will be stored in block textures and the models in block models
 #
@@ -219,4 +224,24 @@ pack:
         time: 10
       2:
         time: 5
-
+  mobs:  # the mob type is the folder location and the name of the mob in "mobs" is the name of the file in that location
+    - "red_mooshroom"
+    - "brown_mooshroom"
+  red_mooshroom:
+    type: "cow" # the mob category / type
+    animation:
+      enable: true
+      amount_of_frames: 2
+      1:
+        time: 10
+      2:
+        time: 5
+  brown_mooshroom:
+    type: "cow"
+    animation:
+      enable: true
+      amount_of_frames: 2
+      1:
+        time: 10
+      2:
+        time: 5

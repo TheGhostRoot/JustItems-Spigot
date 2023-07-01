@@ -118,14 +118,20 @@ public class PackHelper {
         pack.add("pack/assets/minecraft/textures/models/armor");
         pack.add("pack/assets/minecraft/textures/misc");
         pack.add("pack/assets/minecraft/textures/map");
+        pack.add("pack/assets/minecraft/sounds");
+        pack.add("pack/assets/minecraft/sounds/block");
+        pack.add("pack/assets/minecraft/sounds/item");
+        pack.add("pack/assets/minecraft/sounds/random");
         pack.add("pack/assets/minecraft/textures/environment");
         pack.add("pack/assets/minecraft/textures/gui");
+        pack.add("pack/assets/minecraft/textures/entity");
         pack.add("pack/assets/minecraft/textures/gui/advancements");
         pack.add("pack/assets/minecraft/textures/gui/advancements/backgrounds");
         pack.add("pack/assets/minecraft/textures/gui/container");
         pack.add("pack/assets/minecraft/textures/gui/container/creative_inventory");
         pack.add("items");
         pack.add("maps");
+        pack.add("mobs");
         pack.add("environments");
         pack.add("emojis");
         pack.add("blocks");
@@ -668,6 +674,9 @@ public class PackHelper {
             copyEnv(new File(dataFolder, "maps"),
                     new File(dataFolder, "pack/assets/minecraft/textures/map"));
 
+            // Mobs
+            copyMobs(new File(dataFolder, "mobs"), new File(dataFolder, "pack/assets/minecraft/textures/entity"));
+
             // Generate pack.mcmeta file
             generatePackMcMeta(new File(dataFolder, "pack"));
 
@@ -678,6 +687,58 @@ public class PackHelper {
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+
+    public void copyMobs(File sourceFolder, File mobFolder) throws IOException {
+        if (!sourceFolder.exists()) {
+            if (sourceFolder.mkdirs()) {
+                plugin.getLogger().info("Made a folder " + sourceFolder.getName());
+            } else {
+                plugin.getLogger().info("Can't create the folder " + sourceFolder.getName());
+            }
+        }
+
+        if (!mobFolder.exists()) {
+            if (mobFolder.mkdirs()) {
+                plugin.getLogger().info("Made a folder " + mobFolder.getName());
+            } else {
+                plugin.getLogger().info("Can't create the folder " + mobFolder.getName());
+            }
+        }
+
+        File[] files = sourceFolder.listFiles();
+        if (files == null) { return; }
+
+        for (String filePath : plugin.config.getMobs()) {
+
+            File SourceTexture = new File(sourceFolder, filePath+".png");
+            if (!SourceTexture.exists()) { return; }
+
+            File TextureFolderType = new File(mobFolder, plugin.config.getItemType(filePath));
+            if (!TextureFolderType.exists()) {
+                if (TextureFolderType.mkdirs()) {
+                    plugin.getLogger().info("Made a folder " + TextureFolderType.getName());
+                } else {
+                    plugin.getLogger().info("Can't make a folder " + TextureFolderType.getName());
+                }
+            }
+
+            File TextureFile = new File(mobFolder, plugin.config.getItemType(filePath)+"/"+filePath+".png");
+            if (!TextureFile.exists()) {
+                if (TextureFile.createNewFile()) {
+                    plugin.getLogger().info("Made a file " + TextureFile.getName());
+                } else {
+                    plugin.getLogger().info("Can't make a file " + TextureFile.getName());
+                }
+            }
+
+            Files.copy(SourceTexture.toPath(), TextureFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+            if (plugin.config.isItemAnimationEnabled(filePath)) {
+                generateMcmetaAnimation(TextureFolderType, filePath);
+            }
         }
     }
 
@@ -718,6 +779,10 @@ public class PackHelper {
             }
 
             Files.copy(SourceTexture.toPath(), TextureEnv.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+            if (plugin.config.isItemAnimationEnabled(filePath)) {
+                generateMcmetaAnimation(textureFolder, filePath);
+            }
         }
     }
 

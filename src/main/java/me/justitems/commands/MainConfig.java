@@ -147,6 +147,20 @@ public class MainConfig {
         }
     }
 
+    public List<String> getMobs() {
+        List<String> got = (List<String>) configData.getList("pack.mobs");
+        if (got == null) {
+            List<String> array = new ArrayList<>();
+            array.add("new_cow");
+            array.add("new_bee");
+            configData.set("pack.mobs", array);
+            reloadConfig();
+            return new ArrayList<>();
+        } else {
+            return got;
+        }
+    }
+
     public int getItemModelData(String item) {
         return configData.getInt("pack."+item+".model_data");
     }
