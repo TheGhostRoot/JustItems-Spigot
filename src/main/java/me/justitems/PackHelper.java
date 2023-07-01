@@ -680,10 +680,8 @@ public class PackHelper {
             // Generate pack.mcmeta file
             generatePackMcMeta(new File(dataFolder, "pack"));
 
-            copyFolder(new File(dataFolder, "pack"), resourcePackFolder);
-
             // Zip the resource pack folder
-            zipResourcePack(resourcePackFolder, new File(dataFolder, packName + ".zip"));
+            zipResourcePack(new File(dataFolder, "pack/"), new File(dataFolder, packName + ".zip"));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -1407,46 +1405,6 @@ public class PackHelper {
         }
     }
 
-    public void copyFolder(File sourceFolder, File destinationFolder) throws IOException {
-        if (!sourceFolder.exists()) {
-            if (sourceFolder.mkdirs()) {
-                plugin.getLogger().info("Made a folder " + sourceFolder.getName());
-            } else {
-                plugin.getLogger().info("Can't create the folder " + sourceFolder.getName());
-            }
-        }
-
-        if (!destinationFolder.exists()) {
-            if (destinationFolder.mkdirs()) {
-                plugin.getLogger().info("Made a folder " + destinationFolder.getName());
-            } else {
-                plugin.getLogger().info("Can't create the folder " + destinationFolder.getName());
-            }
-        }
-
-        File[] files = sourceFolder.listFiles();
-        if (files != null) {
-            for (File file : files) {
-                File destinationFile = new File(destinationFolder, file.getName());
-                if (destinationFile.isDirectory() && !destinationFile.exists()) {
-                    if (destinationFile.mkdirs()) {
-                        plugin.getLogger().info("Made a folder " + destinationFile.getName());
-                    } else {
-                        plugin.getLogger().info("Can't make a folder " + destinationFile.getName());
-                    }
-                } else {
-                    if (!destinationFile.exists()) {
-                        if (destinationFile.createNewFile()) {
-                            plugin.getLogger().info("Made a file " + destinationFile.getName());
-                        } else {
-                            plugin.getLogger().info("Can't make a file " + destinationFile.getName());
-                        }
-                    }
-                    Files.copy(file.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                }
-            }
-        }
-    }
 
     public void copyItems(File sourceFolder, File texturesItemFolder, File modelFile) throws IOException {
         if (!sourceFolder.exists() || !sourceFolder.isDirectory()) {
